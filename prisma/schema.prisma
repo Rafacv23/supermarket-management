@@ -1,0 +1,71 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+enum Role {
+  Admin
+  Employee
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id         String   @id @default(cuid())
+  name       String   @unique
+  password   String
+  role       Role
+  created_at DateTime @default(now())
+  Order      Order[]
+}
+
+model Product {
+  id            String         @id @default(cuid())
+  name          String
+  barcode       String         @unique
+  description   String?
+  unit          String // e.g. "kg", "pcs", "liters"
+  stock         Int            @default(0)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  orderItems    OrderItem[]
+  receivingLogs ReceivingLog[]
+}
+
+model Order {
+  id         String      @id @default(cuid())
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  employeeId String
+  employee   User        @relation(fields: [employeeId], references: [id])
+  orderItems OrderItem[]
+  status     OrderStatus @default(PENDING)
+}
+
+model OrderItem {
+  id        String @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model ReceivingLog {
+  id         String   @id @default(cuid())
+  productId  String
+  quantity   Int
+  receivedAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id])
+}
