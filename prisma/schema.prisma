@@ -30,10 +30,11 @@ model User {
 
 model Product {
   id            String         @id @default(cuid())
-  name          String
+  name          String         @unique
   barcode       String         @unique
   description   String?
-  unit          String // e.g. "kg", "pcs", "liters"
+  image         String?
+  price         Float?
   stock         Int            @default(0)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
