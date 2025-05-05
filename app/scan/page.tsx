@@ -23,58 +23,44 @@ import {
 } from "@/components/ui/drawer"
 import { buttonVariants } from "@/components/ui/button"
 import { useState } from "react"
-import { Category, Product } from "@prisma/client"
+import { Product } from "@prisma/client"
 import BarcodeScanner from "react-qr-barcode-scanner"
+import { getProductByBarcode, getProductsByQuery } from "@/lib/queries/products"
 
 export default function ScanPage() {
   const [searchTerm, setSearchTerm] = useState<string>("")
   const [products, setProducts] = useState<Product[]>([])
   const [scanning, setScanning] = useState<boolean>(false)
 
-  const exampleProducts: Product[] = [
-    {
-      id: "dadadad",
-      name: "Leche",
-      image: "",
-      barcode: "234242424243",
-      category: Category.Aceite,
-      price: 100,
-      stock: 10,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      description: "Leche de avena",
-    },
-    {
-      id: "dadaddwadad",
-      image: "",
-      name: "Huevos",
-      barcode: "234242424243",
-      category: Category.Arroz,
-      price: 100,
-      stock: 10,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      description: "Huevos de gallina",
-    },
-  ]
-
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
-    console.log("submit")
-    // const results = exampleProducts.filter(
-    //   (p) =>
-    //     p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //     p.barcode.includes(searchTerm)
-    // )
-    // setProducts(results)
-    setProducts(exampleProducts)
-    //TODO: llamar a la api route para que devuelva los productos
+    try {
+      if (!searchTerm || searchTerm.length < 1) {
+        console.error("No se ha introducido un código de barras")
+        return
+      }
+
+      let products = []
+
+      const isBarcode = /^[0-9]{12,13}$/.test(searchTerm)
+      if (isBarcode) {
+        // Buscar por código de barras
+        products = await getProductByBarcode(searchTerm)
+      } else {
+        // Buscar por nombre o consulta general
+        products = await getProductsByQuery(searchTerm)
+      }
+
+      setProducts(Array.isArray(products) ? products : [products])
+    } catch (error) {
+      console.error("Error al obtener los productos:", error)
+    }
   }
 
   function handleScan(result: string) {
     setSearchTerm(result)
     setScanning(false)
-    const results = exampleProducts.filter((p) => p.barcode === result)
+    const results = products.filter((p) => p.barcode === result)
     setProducts(results)
   }
 
@@ -139,8 +125,8 @@ export default function ScanPage() {
         <div>
           <h2>Productos encontrados para {searchTerm}</h2>
           <ul>
-            {exampleProducts.map((product, index) => (
-              <li key={index}>
+            {products.map((product) => (
+              <li key={product.id}>
                 <Card>
                   <CardHeader>
                     <CardTitle>{product.name}</CardTitle>
@@ -155,9 +141,9 @@ export default function ScanPage() {
                       <Button variant="outline">{product.price}€</Button>
                     </div>
                   </CardContent>
-                  <CardFooter>
-                    <Button variant="outline">Eliminar</Button>
-                    <Button variant="outline">Pedir</Button>
+                  <CardFooter className="flex justify-end gap-2">
+                    <Button variant="destructive">Eliminar</Button>
+                    <Button variant="default">Pedir</Button>
                   </CardFooter>
                 </Card>
               </li>
