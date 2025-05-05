@@ -19,6 +19,27 @@ enum OrderStatus {
   CANCELLED
 }
 
+enum Category {
+  Lacteo
+  Fruta
+  Congelado
+  Aceite
+  Caldo
+  Pan
+  Pasta
+  Arroz
+  Conserva
+  Bebida
+  Limpieza
+  FrutoSeco
+  Aceituna
+  Cafe
+  Bolleria
+  Papel
+  Vinagre
+  Harina
+}
+
 model User {
   id         String   @id @default(cuid())
   name       String   @unique
@@ -36,6 +57,7 @@ model Product {
   image         String?
   price         Float?
   stock         Int            @default(0)
+  category Category
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   orderItems    OrderItem[]
