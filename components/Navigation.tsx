@@ -12,7 +12,7 @@ export default function Navigation() {
     <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center fixed bottom-0 left-0 right-0 mb-8">
       <Link
         className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-        href="7"
+        href="/"
         title="Inicio"
       >
         <House size={16} />

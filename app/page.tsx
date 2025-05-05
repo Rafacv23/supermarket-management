@@ -6,7 +6,7 @@ import Link from "next/link"
 export default function Home() {
   return (
     <Container>
-      <h1 className="text-2xl font-bold text-center">{SITE_TITLE}</h1>
+      <h1>{SITE_TITLE}</h1>
       <div className="grid grid-cols-2 gap-4">
         <Link
           href="/scan"
