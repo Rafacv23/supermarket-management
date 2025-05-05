@@ -18,10 +18,11 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
-
 import { Camera, Save, Trash } from "lucide-react"
 
-import { Category } from "@prisma/client"
+interface ReceiveProductFormProps {
+  barcode?: string
+}
 
 // Esquema de validación
 const formSchema = z.object({
@@ -38,14 +39,16 @@ const formSchema = z.object({
     .transform((val) => (typeof val === "number" ? val : undefined)),
 })
 
-export default function ReceiveProductForm() {
+export default function ReceiveProductForm({
+  barcode,
+}: ReceiveProductFormProps) {
   const [scanning, setScanning] = useState<boolean>(false)
   const [productsList, setProductsList] = useState<any[]>([]) // Track products being added
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      barcode: "",
+      barcode: barcode || "",
       stock: undefined,
     },
   })
