@@ -1,3 +1,5 @@
+"use client"
+
 import Container from "@/components/Container"
 import { Button } from "@/components/ui/button"
 import {
@@ -20,35 +22,59 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { buttonVariants } from "@/components/ui/button"
+import { useState } from "react"
+import { Category, Product } from "@prisma/client"
 
 export default function ScanPage() {
-  const exampleProducts = [
+  const [searchTerm, setSearchTerm] = useState<string>("")
+  const [products, setProducts] = useState<Product[]>([])
+
+  const exampleProducts: Product[] = [
     {
+      id: "dadadad",
       name: "Leche",
+      image: "",
       barcode: "234242424243",
-      category: "lacteos",
+      category: Category.Aceite,
       price: 100,
       stock: 10,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      description: "Leche de avena",
     },
     {
+      id: "dadaddwadad",
+      image: "",
       name: "Huevos",
       barcode: "234242424243",
-      category: "lacteos",
+      category: Category.Arroz,
       price: 100,
       stock: 10,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      description: "Huevos de gallina",
     },
   ]
+
+  function onSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    console.log("submit")
+    setProducts(exampleProducts)
+    //TODO: llamar a la api route para que devuelva los productos
+  }
 
   return (
     <Container>
       <h1>Escanear productos</h1>
       <p>Escanea o añade nuevos productos.</p>
-      <form>
-        buscar productos
+      <form onSubmit={onSubmit}>
+        Buscar productos
         <div className="flex gap-2">
           <Input
-            type="text"
-            placeholder="Nombre del producto o código de barras"
+            type="search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Nombre o código de barras"
           />
           <Button>
             <Camera />
@@ -73,31 +99,36 @@ export default function ScanPage() {
         </DrawerContent>
       </Drawer>
 
-      <div>
-        <ul>
-          {exampleProducts.map((product, index) => (
-            <li key={index}>
-              <Card>
-                <CardHeader>
-                  <CardTitle>{product.name}</CardTitle>
-                  <CardDescription>{product.barcode}</CardDescription>
-                  <CardDescription>{product.stock} en almacen</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex gap-2">
-                    <Button variant="outline">{product.category}</Button>
-                    <Button variant="outline">{product.price}€</Button>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button variant="outline">Eliminar</Button>
-                  <Button variant="outline">Pedir</Button>
-                </CardFooter>
-              </Card>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {products.length > 0 ? (
+        <div>
+          <h2>Productos encontrados para {searchTerm}</h2>
+          <ul>
+            {exampleProducts.map((product, index) => (
+              <li key={index}>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>{product.name}</CardTitle>
+                    <CardDescription>{product.barcode}</CardDescription>
+                    <CardDescription>
+                      {product.stock} en almacen
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex gap-2">
+                      <Button variant="outline">{product.category}</Button>
+                      <Button variant="outline">{product.price}€</Button>
+                    </div>
+                  </CardContent>
+                  <CardFooter>
+                    <Button variant="outline">Eliminar</Button>
+                    <Button variant="outline">Pedir</Button>
+                  </CardFooter>
+                </Card>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </Container>
   )
 }
