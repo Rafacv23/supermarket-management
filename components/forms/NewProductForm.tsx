@@ -59,7 +59,7 @@ export default function NewProductForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      category: "",
+      category: undefined,
       barcode: "",
       price: undefined,
       stock: undefined,
@@ -195,7 +195,7 @@ export default function NewProductForm() {
         />
 
         <footer className="flex gap-4 pt-4 justify-end">
-          <Button type="cancel" variant="outline">
+          <Button type="reset" variant="outline">
             Borrar
           </Button>
           <Button type="submit">Guardar</Button>
