@@ -38,6 +38,8 @@ enum Category {
   Papel
   Vinagre
   Harina
+  Champu
+  Detergente
   //TODO: add more categories like "champu", "detergente"
 }
 
@@ -78,11 +80,11 @@ model Order {
 model OrderItem {
   id        String @id @default(cuid())
   orderId   String
-  productId String
+  productBarcode String
   quantity  Int
 
   order   Order   @relation(fields: [orderId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
+  product Product @relation(fields: [productBarcode], references: [barcode])
 }
 
 model ReceivingLog {
