@@ -1,0 +1,61 @@
+import { create } from "zustand"
+import { persist } from "zustand/middleware"
+
+interface OrderProduct {
+  barcode: string
+  stock: number
+}
+
+interface OrderStore {
+  order: OrderProduct[]
+  addProduct: (product: OrderProduct) => void
+  updateProductStock: (barcode: string, stock: number) => void
+  removeProduct: (barcode: string) => void
+  clearOrder: () => void
+}
+
+// Stack the products in localStorage until the user sends out to the database
+export const useOrderStore = create<OrderStore>()(
+  persist(
+    (set, get) => ({
+      order: [],
+
+      addProduct: (product) => {
+        const existing = get().order.find((p) => p.barcode === product.barcode)
+        if (existing) {
+          // If product already exists, update stock
+          set({
+            order: get().order.map((p) =>
+              p.barcode === product.barcode
+                ? { ...p, stock: p.stock + product.stock }
+                : p
+            ),
+          })
+        } else {
+          set({ order: [...get().order, product] })
+        }
+      },
+
+      updateProductStock: (barcode, stock) => {
+        set({
+          order: get().order.map((p) =>
+            p.barcode === barcode ? { ...p, stock } : p
+          ),
+        })
+      },
+
+      removeProduct: (barcode) => {
+        set({
+          order: get().order.filter((p) => p.barcode !== barcode),
+        })
+      },
+
+      clearOrder: () => {
+        set({ order: [] })
+      },
+    }),
+    {
+      name: "order-storage", // localStorage key
+    }
+  )
+)

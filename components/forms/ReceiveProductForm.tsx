@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
 import { Camera, Save, Trash } from "lucide-react"
+import ProductCard from "@/components/ProductCard"
 
 interface ReceiveProductFormProps {
   barcode?: string
@@ -162,14 +163,9 @@ export default function ReceiveProductForm({
         <div className="mt-6">
           <h3 className="text-lg font-semibold">Productos agregados</h3>
           <ul className="space-y-2 mt-2">
-            {productsList.map((product, index) => (
-              <li key={index} className="border p-2 rounded-md">
-                <p>
-                  <strong>Código de barras:</strong> {product.barcode}
-                </p>
-                <p>
-                  <strong>Stock:</strong> {product.stock}
-                </p>
+            {productsList.map((product) => (
+              <li key={product.barcode} className="border p-2 rounded-md">
+                <ProductCard product={product} />
               </li>
             ))}
           </ul>
@@ -179,7 +175,7 @@ export default function ReceiveProductForm({
       {/* Confirm button */}
       {productsList.length > 0 && (
         <footer className="flex gap-4 pt-4 justify-end">
-          <Button type="button" variant="primary" onClick={onConfirm}>
+          <Button type="button" variant="default" onClick={onConfirm}>
             Confirmar recepción de productos
           </Button>
         </footer>
