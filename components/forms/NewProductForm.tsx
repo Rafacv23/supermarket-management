@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
+import { toast } from "sonner"
 
 import { Camera, Save, Trash } from "lucide-react"
 
@@ -84,7 +85,9 @@ export default function NewProductForm() {
         stock: values.stock,
       })
       //TODO Add a toast or reset form here
+      toast.success("Producto creado correctamente")
     } catch (error) {
+      toast.error("Error creando el producto")
       console.error("Error saving product:", error)
     }
   }
