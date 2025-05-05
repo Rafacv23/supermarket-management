@@ -84,8 +84,8 @@ export default function NewProductForm() {
         price: values.price,
         stock: values.stock,
       })
-      //TODO Add a toast or reset form here
       toast.success("Producto creado correctamente")
+      form.reset()
     } catch (error) {
       toast.error("Error creando el producto")
       console.error("Error saving product:", error)
