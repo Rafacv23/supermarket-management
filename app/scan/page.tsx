@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Camera, Search } from "lucide-react"
+import { Camera, Search, Plus } from "lucide-react"
 import NewProductForm from "@/components/forms/NewProductForm"
 import {
   Drawer,
@@ -122,7 +122,7 @@ export default function ScanPage() {
       )}
       <Drawer>
         <DrawerTrigger className={buttonVariants({ variant: "default" })}>
-          Añadir nuevo producto
+          <Plus /> Añadir nuevo producto
         </DrawerTrigger>
         <DrawerContent>
           <DrawerHeader>

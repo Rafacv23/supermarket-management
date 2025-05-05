@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 
-import { Camera } from "lucide-react"
+import { Camera, Save, Trash } from "lucide-react"
 
 import { Category } from "@prisma/client"
 
@@ -41,13 +41,20 @@ const formSchema = z.object({
   }),
   price: z
     .union([
-      z.coerce.number().min(0.01),
+      z.coerce.number().min(0.01, {
+        message: "El precio debe ser mayor que 0.01.",
+      }),
       z.literal("").transform(() => undefined),
     ])
     .optional()
     .transform((val) => (typeof val === "number" ? val : undefined)),
   stock: z
-    .union([z.coerce.number().min(0), z.literal("").transform(() => undefined)])
+    .union([
+      z.coerce
+        .number()
+        .min(0, { message: "El stock debe ser mayor o igual que 0." }),
+      z.literal("").transform(() => undefined),
+    ])
     .optional()
     .transform((val) => (typeof val === "number" ? val : undefined)),
 })
@@ -169,7 +176,12 @@ export default function NewProductForm() {
             <FormItem>
               <FormLabel>Precio (Opcional)</FormLabel>
               <FormControl>
-                <Input type="number" placeholder="Precio en €" {...field} />
+                <Input
+                  type="number"
+                  min={0.01}
+                  placeholder="Precio en €"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -185,6 +197,7 @@ export default function NewProductForm() {
               <FormControl>
                 <Input
                   type="number"
+                  min={0}
                   placeholder="Cantidad en almacén"
                   {...field}
                 />
@@ -196,9 +209,12 @@ export default function NewProductForm() {
 
         <footer className="flex gap-4 pt-4 justify-end">
           <Button type="reset" variant="outline">
+            <Trash />
             Borrar
           </Button>
-          <Button type="submit">Guardar</Button>
+          <Button type="submit">
+            <Save /> Guardar
+          </Button>
         </footer>
       </form>
     </Form>
