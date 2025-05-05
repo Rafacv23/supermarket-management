@@ -38,6 +38,7 @@ enum Category {
   Papel
   Vinagre
   Harina
+  //TODO: add more categories like "champu", "detergente"
 }
 
 model User {
