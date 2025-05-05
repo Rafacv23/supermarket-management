@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useState } from "react"
 import BarcodeScanner from "react-qr-barcode-scanner"
+import createProduct from "@/lib/actions/createProduct"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -73,10 +74,19 @@ export default function NewProductForm() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    //TODO : añadir toast para confirmar que se ha enviado el formulario
-    //TODO: crear action con use server para guardar producto en db
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      await createProduct({
+        name: values.name,
+        category: values.category,
+        barcode: values.barcode,
+        price: values.price,
+        stock: values.stock,
+      })
+      //TODO Add a toast or reset form here
+    } catch (error) {
+      console.error("Error saving product:", error)
+    }
   }
 
   function handleScan(result: string) {
