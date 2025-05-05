@@ -3,6 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import { useState } from "react"
+import BarcodeScanner from "react-qr-barcode-scanner"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -51,6 +53,8 @@ const formSchema = z.object({
 })
 
 export default function NewProductForm() {
+  const [scanning, setScanning] = useState<boolean>(false)
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,6 +70,13 @@ export default function NewProductForm() {
     console.log(values)
     //TODO : añadir toast para confirmar que se ha enviado el formulario
     //TODO: crear action con use server para guardar producto en db
+  }
+
+  function handleScan(result: string) {
+    if (result) {
+      form.setValue("barcode", result)
+      setScanning(false)
+    }
   }
 
   return (
@@ -124,14 +135,32 @@ export default function NewProductForm() {
                 <FormControl>
                   <Input type="text" placeholder="1234567890123" {...field} />
                 </FormControl>
-                <Button>
-                  <Camera />
+                <Button
+                  type="button"
+                  variant={scanning ? "destructive" : "default"}
+                  onClick={() => setScanning(!scanning)}
+                  className="gap-1"
+                >
+                  <Camera className="w-4 h-4" />
+                  {scanning ? "Cerrar cámara" : "Escanear"}
                 </Button>
               </div>
               <FormMessage />
             </FormItem>
           )}
         />
+
+        {scanning && (
+          <div className="mt-4">
+            <BarcodeScanner
+              width={400}
+              height={400}
+              onUpdate={(err, result) => {
+                if (result) handleScan(result.getText())
+              }}
+            />
+          </div>
+        )}
 
         <FormField
           control={form.control}
@@ -166,7 +195,7 @@ export default function NewProductForm() {
         />
 
         <footer className="flex gap-4 pt-4 justify-end">
-          <Button type="reset" variant="outline">
+          <Button type="cancel" variant="outline">
             Borrar
           </Button>
           <Button type="submit">Guardar</Button>
