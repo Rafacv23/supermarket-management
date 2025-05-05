@@ -2,14 +2,6 @@
 
 import Container from "@/components/Container"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Camera, Search, Plus } from "lucide-react"
 import NewProductForm from "@/components/forms/NewProductForm"
@@ -26,6 +18,7 @@ import { useState } from "react"
 import { Product } from "@prisma/client"
 import BarcodeScanner from "react-qr-barcode-scanner"
 import { getProductByBarcode, getProductsByQuery } from "@/lib/queries/products"
+import ProductCard from "@/components/ProductCard"
 
 export default function ScanPage() {
   const [searchTerm, setSearchTerm] = useState<string>("")
@@ -127,25 +120,7 @@ export default function ScanPage() {
           <ul>
             {products.map((product) => (
               <li key={product.id}>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>{product.name}</CardTitle>
-                    <CardDescription>{product.barcode}</CardDescription>
-                    <CardDescription>
-                      {product.stock} en almacen
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex gap-2">
-                      <Button variant="outline">{product.category}</Button>
-                      <Button variant="outline">{product.price}€</Button>
-                    </div>
-                  </CardContent>
-                  <CardFooter className="flex justify-end gap-2">
-                    <Button variant="destructive">Eliminar</Button>
-                    <Button variant="default">Pedir</Button>
-                  </CardFooter>
-                </Card>
+                <ProductCard product={product} />
               </li>
             ))}
           </ul>

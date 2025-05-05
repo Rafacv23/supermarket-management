@@ -12,17 +12,6 @@ import { PackageCheck } from "lucide-react"
 import ReceiveProductForm from "@/components/forms/ReceiveProductForm"
 
 export default function ReceivePage() {
-  const testProducts = [
-    {
-      barcode: "8410436247450",
-      stock: 10,
-    },
-    {
-      barcode: "8432425099765",
-      stock: 5,
-    },
-  ]
-
   return (
     <Container>
       <h1>Recibir Pedido</h1>
