@@ -1,44 +1,55 @@
-import { Barcode, Boxes, House, PackageCheck } from "lucide-react"
+import {
+  Barcode,
+  Boxes,
+  ClipboardList,
+  House,
+  PackageCheck,
+} from "lucide-react"
+import Link from "next/link"
 
 export default function Navigation() {
   return (
-    <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-      <a
+    <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center fixed bottom-0 left-0 right-0 mb-8">
+      <Link
         className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-        href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-        target="_blank"
-        rel="noopener noreferrer"
+        href="7"
+        title="Inicio"
       >
-        <House />
+        <House size={16} />
         Inicio
-      </a>
-      <a
+      </Link>
+      <Link
         className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-        href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-        target="_blank"
-        rel="noopener noreferrer"
+        href="/scan"
+        title="Escanear producto"
       >
-        <Barcode />
+        <Barcode size={16} />
         Escaner
-      </a>
-      <a
+      </Link>
+      <Link
         className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-        href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-        target="_blank"
-        rel="noopener noreferrer"
+        href="/receive"
+        title="Recepción de pedidos"
       >
-        <PackageCheck />
-        Pedido
-      </a>
-      <a
+        <PackageCheck size={16} />
+        Recepción
+      </Link>
+      <Link
         className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-        href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-        target="_blank"
-        rel="noopener noreferrer"
+        href="/upload"
+        title="Subir mercancía"
       >
-        <Boxes />
+        <ClipboardList size={16} />
+        Subir
+      </Link>
+      <Link
+        className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+        href="/inventory"
+        title="Comprobar almacén"
+      >
+        <Boxes size={16} />
         Almacén
-      </a>
+      </Link>
     </footer>
   )
 }
