@@ -6,8 +6,8 @@ interface OrderProduct {
   stock: number
 }
 
-interface OrderStore {
-  order: OrderProduct[]
+interface ReceiveStore {
+  receivedProducts: OrderProduct[]
   addProduct: (product: OrderProduct) => void
   updateProductStock: (barcode: string, stock: number) => void
   removeProduct: (barcode: string) => void
@@ -15,30 +15,32 @@ interface OrderStore {
 }
 
 // Stack the products in localStorage until the user sends out to the database
-export const useOrderStore = create<OrderStore>()(
+export const useReceiveStore = create<ReceiveStore>()(
   persist(
     (set, get) => ({
-      order: [],
+      receivedProducts: [],
 
       addProduct: (product) => {
-        const existing = get().order.find((p) => p.barcode === product.barcode)
+        const existing = get().receivedProducts.find(
+          (p) => p.barcode === product.barcode
+        )
         if (existing) {
           // If product already exists, update stock
           set({
-            order: get().order.map((p) =>
+            receivedProducts: get().receivedProducts.map((p) =>
               p.barcode === product.barcode
                 ? { ...p, stock: p.stock + product.stock }
                 : p
             ),
           })
         } else {
-          set({ order: [...get().order, product] })
+          set({ receivedProducts: [...get().receivedProducts, product] })
         }
       },
 
       updateProductStock: (barcode, stock) => {
         set({
-          order: get().order.map((p) =>
+          receivedProducts: get().receivedProducts.map((p) =>
             p.barcode === barcode ? { ...p, stock } : p
           ),
         })
@@ -46,16 +48,18 @@ export const useOrderStore = create<OrderStore>()(
 
       removeProduct: (barcode) => {
         set({
-          order: get().order.filter((p) => p.barcode !== barcode),
+          receivedProducts: get().receivedProducts.filter(
+            (p) => p.barcode !== barcode
+          ),
         })
       },
 
       clearOrder: () => {
-        set({ order: [] })
+        set({ receivedProducts: [] })
       },
     }),
     {
-      name: "receive-storage", // localStorage key
+      name: "order-storage", // localStorage key
     }
   )
 )

@@ -81,7 +81,11 @@ export default function UploadProductForm() {
                 <FormLabel>Código de barras</FormLabel>
                 <div className="flex gap-2">
                   <FormControl>
-                    <Input type="text" placeholder="1234567890123" {...field} />
+                    <Input
+                      type="text"
+                      placeholder="Código de barras"
+                      {...field}
+                    />
                   </FormControl>
                   <Button
                     type="button"
@@ -117,17 +121,28 @@ export default function UploadProductForm() {
               <FormItem>
                 <FormLabel>Cantidad</FormLabel>
                 <FormControl>
-                  <Input type="number" min={1} {...field} />
+                  <Input
+                    type="number"
+                    placeholder="Cantidad a subir"
+                    min={1}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <Button type="submit">
-            <Save className="w-4 h-4 mr-2" />
-            Añadir
-          </Button>
+          <footer className="flex gap-4 pt-4 justify-end">
+            <Button type="reset" variant="outline">
+              <Trash />
+              Borrar
+            </Button>
+            <Button type="submit">
+              <Save className="w-4 h-4 mr-2" />
+              Añadir
+            </Button>
+          </footer>
         </form>
       </Form>
 

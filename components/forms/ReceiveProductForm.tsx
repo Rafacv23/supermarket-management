@@ -6,6 +6,7 @@ import { z } from "zod"
 import { useState } from "react"
 import BarcodeScanner from "react-qr-barcode-scanner"
 import receiveProduct from "@/lib/actions/receiveProduct"
+import { useReceiveStore } from "@/store/receiveStore"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -18,8 +19,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
-import { Camera, Save, Trash } from "lucide-react"
-import ProductCard from "@/components/ProductCard"
+import { Camera, Save, Trash, UploadCloud } from "lucide-react"
 
 interface ReceiveProductFormProps {
   barcode?: string
@@ -44,7 +44,9 @@ export default function ReceiveProductForm({
   barcode,
 }: ReceiveProductFormProps) {
   const [scanning, setScanning] = useState<boolean>(false)
-  const [productsList, setProductsList] = useState<any[]>([]) // Track products being added
+  const [loading, setLoading] = useState(false)
+  const { receivedProducts, addProduct, removeProduct, clearOrder } =
+    useReceiveStore()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,6 +56,11 @@ export default function ReceiveProductForm({
     },
   })
 
+  function handleAdd(values: z.infer<typeof formSchema>) {
+    addProduct(values)
+    toast.success("Producto añadido")
+    form.reset()
+  }
   // Add product to list
   function handleScan(result: string) {
     if (result) {
@@ -62,21 +69,12 @@ export default function ReceiveProductForm({
     }
   }
 
-  function handleAddProduct(values: z.infer<typeof formSchema>) {
-    const newProduct = {
-      barcode: values.barcode,
-      stock: values.stock,
-    }
-    setProductsList((prevList) => [...prevList, newProduct]) // Add to list
-    form.reset() // Reset form for next product
-  }
-
   // Confirm and save products
-  async function onConfirm() {
+  async function handleUpload() {
     try {
-      await receiveProduct({ products: productsList })
+      await receiveProduct({ products: receivedProducts })
       toast.success("Productos actualizados correctamente")
-      setProductsList([]) // Clear the product list after confirmation
+      clearOrder() // Clear the product list after confirmation
     } catch (error) {
       toast.error("Error actualizando productos")
       console.error("Error saving products:", error)
@@ -86,10 +84,7 @@ export default function ReceiveProductForm({
   return (
     <div>
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleAddProduct)}
-          className="space-y-6 p-4"
-        >
+        <form onSubmit={form.handleSubmit(handleAdd)} className="space-y-6 p-4">
           <FormField
             control={form.control}
             name="barcode"
@@ -98,7 +93,11 @@ export default function ReceiveProductForm({
                 <FormLabel>Código de barras</FormLabel>
                 <div className="flex gap-2">
                   <FormControl>
-                    <Input type="text" placeholder="1234567890123" {...field} />
+                    <Input
+                      type="text"
+                      placeholder="Código de barras"
+                      {...field}
+                    />
                   </FormControl>
                   <Button
                     type="button"
@@ -132,12 +131,12 @@ export default function ReceiveProductForm({
             name="stock"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Stock</FormLabel>
+                <FormLabel>Cantidad</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
                     min={0}
-                    placeholder="Cantidad en almacén"
+                    placeholder="Cantidad recibida"
                     {...field}
                   />
                 </FormControl>
@@ -152,33 +151,48 @@ export default function ReceiveProductForm({
               Borrar
             </Button>
             <Button type="submit">
-              <Save /> Agregar producto
+              <Save className="w-4 h-4 mr-2" />
+              Añadir
             </Button>
           </footer>
         </form>
       </Form>
 
-      {/* Product list preview */}
-      {productsList.length > 0 && (
-        <div className="mt-6">
-          <h3 className="text-lg font-semibold">Productos agregados</h3>
-          <ul className="space-y-2 mt-2">
-            {productsList.map((product) => (
-              <li key={product.barcode} className="border p-2 rounded-md">
-                <ProductCard product={product} />
+      {receivedProducts.length > 0 && (
+        <div className="space-y-4 p-4">
+          <h3 className="font-bold">Productos añadidos:</h3>
+          <ul className="space-y-2">
+            {receivedProducts.map((product) => (
+              <li
+                key={product.barcode}
+                className="flex justify-between items-center border p-2 rounded"
+              >
+                <span>
+                  {product.barcode} — {product.stock} uds
+                </span>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => removeProduct(product.barcode)}
+                >
+                  <Trash className="w-4 h-4" />
+                </Button>
               </li>
             ))}
           </ul>
-        </div>
-      )}
 
-      {/* Confirm button */}
-      {productsList.length > 0 && (
-        <footer className="flex gap-4 pt-4 justify-end">
-          <Button type="button" variant="default" onClick={onConfirm}>
-            Confirmar recepción de productos
-          </Button>
-        </footer>
+          <div className="flex gap-4 justify-end">
+            <Button variant="outline" onClick={clearOrder}>
+              <Trash className="w-4 h-4 mr-1" />
+              Vaciar lista
+            </Button>
+
+            <Button onClick={handleUpload} disabled={loading}>
+              <UploadCloud className="w-4 h-4 mr-1" />
+              Confirmar y guardar
+            </Button>
+          </div>
+        </div>
       )}
     </div>
   )
