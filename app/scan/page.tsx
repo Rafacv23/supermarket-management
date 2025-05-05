@@ -24,10 +24,12 @@ import {
 import { buttonVariants } from "@/components/ui/button"
 import { useState } from "react"
 import { Category, Product } from "@prisma/client"
+import BarcodeScanner from "react-qr-barcode-scanner"
 
 export default function ScanPage() {
   const [searchTerm, setSearchTerm] = useState<string>("")
   const [products, setProducts] = useState<Product[]>([])
+  const [scanning, setScanning] = useState<boolean>(false)
 
   const exampleProducts: Product[] = [
     {
@@ -59,8 +61,21 @@ export default function ScanPage() {
   function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     console.log("submit")
+    // const results = exampleProducts.filter(
+    //   (p) =>
+    //     p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    //     p.barcode.includes(searchTerm)
+    // )
+    // setProducts(results)
     setProducts(exampleProducts)
     //TODO: llamar a la api route para que devuelva los productos
+  }
+
+  function handleScan(result: string) {
+    setSearchTerm(result)
+    setScanning(false)
+    const results = exampleProducts.filter((p) => p.barcode === result)
+    setProducts(results)
   }
 
   return (
@@ -76,14 +91,35 @@ export default function ScanPage() {
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Nombre o código de barras"
           />
-          <Button>
-            <Camera />
+          <Button type="submit" className="gap-1">
+            <Search className="w-4 h-4" />
+            Buscar
           </Button>
-          <Button type="submit">
-            <Search />
+          <Button
+            type="button"
+            variant={scanning ? "destructive" : "outline"}
+            onClick={() => setScanning(!scanning)}
+            className="gap-1"
+          >
+            <Camera className="w-4 h-4" />
+            {scanning ? "Cerrar cámara" : "Escanear"}
           </Button>
         </div>
       </form>
+
+      {scanning && (
+        <div className="mt-4 max-w-sm border rounded-md overflow-hidden">
+          <BarcodeScanner
+            width={300}
+            height={300}
+            onUpdate={(err, result) => {
+              if (result) {
+                handleScan(result.getText())
+              }
+            }}
+          />
+        </div>
+      )}
       <Drawer>
         <DrawerTrigger className={buttonVariants({ variant: "default" })}>
           Añadir nuevo producto
