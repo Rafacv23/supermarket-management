@@ -38,7 +38,8 @@ export default function OrderPage({
   const { data: order, isLoading, isError } = useOrderDetails(orderId)
 
   const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(FormSchema as any),
     defaultValues: {
       items: ["recents", "home"],
     },
