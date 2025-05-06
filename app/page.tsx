@@ -1,6 +1,6 @@
 import Container from "@/components/Container"
 import { SITE_TITLE } from "@/lib/constants"
-import { Barcode, Boxes, ClipboardList, PackageCheck } from "lucide-react"
+import { Barcode, ClipboardList, PackageCheck } from "lucide-react"
 import Link from "next/link"
 
 export default function Home() {
@@ -28,13 +28,6 @@ export default function Home() {
         >
           <ClipboardList className="h-8 w-8 mb-2 text-primary" />
           <span className="text-sm font-medium">Subir mercancía</span>
-        </Link>
-        <Link
-          href="/inventory"
-          className="flex flex-col items-center justify-center p-6 bg-primary/10 rounded-lg border border-primary/20 hover:bg-primary/20 transition-colors"
-        >
-          <Boxes className="h-8 w-8 mb-2 text-primary" />
-          <span className="text-sm font-medium">Comprobar almacén</span>
         </Link>
       </div>
     </Container>

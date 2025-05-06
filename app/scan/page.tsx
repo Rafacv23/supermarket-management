@@ -3,7 +3,7 @@
 import Container from "@/components/Container"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Camera, Search, Plus } from "lucide-react"
+import { Camera, Search, Plus, Loader } from "lucide-react"
 import NewProductForm from "@/components/forms/NewProductForm"
 import {
   Drawer,
@@ -14,16 +14,22 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { buttonVariants } from "@/components/ui/button"
-import { useState } from "react"
-import { Product } from "@prisma/client"
+import { useEffect, useState } from "react"
+import { Category, Product } from "@prisma/client"
 import BarcodeScanner from "react-qr-barcode-scanner"
-import { getProductByBarcode, getProductsByQuery } from "@/lib/queries/products"
+import {
+  getProductByBarcode,
+  getProductsByQuery,
+  useProductsByCategory,
+} from "@/lib/queries/products"
 import ProductCard from "@/components/ProductCard"
+import SearchFilters from "@/components/SearchFilters"
 
 export default function ScanPage() {
   const [searchTerm, setSearchTerm] = useState<string>("")
   const [products, setProducts] = useState<Product[]>([])
   const [scanning, setScanning] = useState<boolean>(false)
+  const [category, setCategory] = useState<Category | undefined>()
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -57,6 +63,18 @@ export default function ScanPage() {
     setProducts(results)
   }
 
+  const {
+    data: categoryProducts,
+    isLoading,
+    isError,
+  } = useProductsByCategory(category)
+
+  useEffect(() => {
+    if (categoryProducts) {
+      setProducts(categoryProducts)
+    }
+  }, [categoryProducts])
+
   return (
     <Container>
       <h1>Escanear productos</h1>
@@ -85,6 +103,7 @@ export default function ScanPage() {
           </Button>
         </div>
       </form>
+      <SearchFilters category={category} setCategory={setCategory} />
 
       {scanning && (
         <div className="mt-4 max-w-sm border rounded-md overflow-hidden">
@@ -114,6 +133,19 @@ export default function ScanPage() {
         </DrawerContent>
       </Drawer>
 
+      {isLoading && (
+        <div className="flex items-center gap-2 mt-4 text-muted-foreground">
+          <Loader className="w-4 h-4 animate-spin" />
+          Cargando productos...
+        </div>
+      )}
+
+      {isError && (
+        <div className="text-red-500 mt-4">
+          Ocurrió un error al cargar los productos.
+        </div>
+      )}
+
       {products.length > 0 ? (
         <div>
           <h2>Productos encontrados para {searchTerm}</h2>
@@ -125,7 +157,9 @@ export default function ScanPage() {
             ))}
           </ul>
         </div>
-      ) : null}
+      ) : (
+        <p>No se han encontrado productos</p>
+      )}
     </Container>
   )
 }

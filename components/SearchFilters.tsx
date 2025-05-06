@@ -7,30 +7,35 @@ import {
 } from "@/components/ui/select"
 import { Category } from "@prisma/client"
 
-export default function SearchFilters({ category, setCategory }: any) {
+interface SearchFiltersProps {
+  category: Category | undefined
+  setCategory: (category: Category) => void
+}
+
+export default function SearchFilters({
+  category,
+  setCategory,
+}: SearchFiltersProps) {
   return (
     <nav>
-      <ul>
-        <li>Filtros</li>
-        <form>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Categoría del producto" />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.values(Category).map((category) => (
-                <SelectItem
-                  key={category}
-                  value={category}
-                  onChange={() => setCategory(category)}
-                >
-                  {category}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </form>
-      </ul>
+      <h4>Categoría</h4>
+      <form>
+        <Select
+          value={category}
+          onValueChange={(value) => setCategory(value as Category)}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Categoría del producto" />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.values(Category).map((cat) => (
+              <SelectItem key={cat} value={cat}>
+                {cat}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </form>
     </nav>
   )
 }

@@ -1,10 +1,4 @@
-import {
-  Barcode,
-  Boxes,
-  ClipboardList,
-  House,
-  PackageCheck,
-} from "lucide-react"
+import { Barcode, ClipboardList, House, PackageCheck } from "lucide-react"
 import Link from "next/link"
 
 export default function Navigation() {
@@ -41,14 +35,6 @@ export default function Navigation() {
       >
         <ClipboardList size={16} />
         Subir
-      </Link>
-      <Link
-        className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-        href="/inventory"
-        title="Comprobar almacén"
-      >
-        <Boxes size={16} />
-        Almacén
       </Link>
     </footer>
   )
