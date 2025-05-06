@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Trash, Save, UploadCloud, Camera } from "lucide-react"
+import uploadProductAndCreateOrder from "@/lib/actions/createOrder"
 
 const formSchema = z.object({
   barcode: z.string().min(2, "Código inválido"),
@@ -31,7 +32,8 @@ export default function UploadProductForm() {
   const { order, addProduct, removeProduct, clearOrder } = useOrderStore()
 
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(formSchema as any),
     defaultValues: {
       barcode: "",
       stock: 1,

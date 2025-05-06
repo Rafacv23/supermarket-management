@@ -49,7 +49,8 @@ export default function ReceiveProductForm({
     useReceiveStore()
 
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(formSchema as any),
     defaultValues: {
       barcode: barcode || "",
       stock: undefined,
@@ -57,9 +58,11 @@ export default function ReceiveProductForm({
   })
 
   function handleAdd(values: z.infer<typeof formSchema>) {
-    addProduct(values)
+    setLoading(true)
+    addProduct({ ...values, stock: values.stock ?? 0 })
     toast.success("Producto añadido")
     form.reset()
+    setLoading(false)
   }
   // Add product to list
   function handleScan(result: string) {
