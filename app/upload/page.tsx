@@ -1,7 +1,6 @@
 "use client"
 
 import Container from "@/components/Container"
-import uploadProduct from "@/lib/actions/uploadProduct"
 import { useOrderStore } from "@/store/orderStore"
 import { useState } from "react"
 import {
@@ -22,6 +21,7 @@ import {
   CardHeader,
   CardDescription,
 } from "@/components/ui/card"
+import uploadProductAndCreateOrder from "@/lib/actions/createOrder"
 
 export default function UploadPage() {
   const { order, removeProduct, clearOrder } = useOrderStore()
@@ -34,7 +34,10 @@ export default function UploadPage() {
       setLoading(true)
       setError("")
 
-      await uploadProduct({ products: order })
+      await uploadProductAndCreateOrder({
+        employeeId: "admin",
+        products: order,
+      })
 
       clearOrder()
       alert("Productos recibidos correctamente")

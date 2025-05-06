@@ -1,9 +1,14 @@
+"use client"
+
 import Container from "@/components/Container"
 import { SITE_TITLE } from "@/lib/constants"
-import { Barcode, ClipboardList, PackageCheck } from "lucide-react"
+import { usePendingOrders } from "@/lib/queries/orders"
+import { Barcode, ClipboardList, Loader, PackageCheck } from "lucide-react"
 import Link from "next/link"
 
 export default function Home() {
+  const { data: pendingOrders, isLoading, isError } = usePendingOrders()
+
   return (
     <Container>
       <h1>{SITE_TITLE}</h1>
@@ -30,6 +35,39 @@ export default function Home() {
           <span className="text-sm font-medium">Subir mercancía</span>
         </Link>
       </div>
+
+      {isLoading && (
+        <div className="flex items-center gap-2 mt-4 text-muted-foreground">
+          <Loader className="w-4 h-4 animate-spin" />
+          Cargando pedidos...
+        </div>
+      )}
+
+      {isError && (
+        <div className="text-red-500 mt-4">
+          Ocurrió un error al cargar los pedidos.
+        </div>
+      )}
+
+      {(pendingOrders ?? []).length > 0 ? (
+        <div>
+          <h2 className="text-lg font-bold mt-4">Pedidos pendientes</h2>
+          <ul className="mt-2">
+            {(pendingOrders ?? []).map((order) => (
+              <li key={order.id} className="flex items-center gap-2">
+                <Link
+                  href={`/orders/${order.id}`}
+                  className="text-blue-500 hover:underline"
+                >
+                  Pedido {order.id}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <p className="mt-4">No hay pedidos pendientes</p>
+      )}
     </Container>
   )
 }

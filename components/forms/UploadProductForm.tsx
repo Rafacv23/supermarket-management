@@ -6,7 +6,6 @@ import { z } from "zod"
 import { useState } from "react"
 import { toast } from "sonner"
 import { useOrderStore } from "@/store/orderStore"
-import uploadProduct from "@/lib/actions/uploadProduct"
 import BarcodeScanner from "react-qr-barcode-scanner"
 
 import {
@@ -56,7 +55,10 @@ export default function UploadProductForm() {
   async function handleUpload() {
     setLoading(true)
     try {
-      await uploadProduct({ products: order })
+      await uploadProductAndCreateOrder({
+        employeeId: "admin",
+        products: order,
+      })
       toast.success("Productos enviados correctamente")
       clearOrder()
     } catch {
