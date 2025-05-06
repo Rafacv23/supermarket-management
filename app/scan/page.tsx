@@ -6,15 +6,6 @@ import { Input } from "@/components/ui/input"
 import { Camera, Search, Plus } from "lucide-react"
 import NewProductForm from "@/components/forms/NewProductForm"
 import Loading from "@/components/Loading"
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer"
-import { buttonVariants } from "@/components/ui/button"
 import { useEffect, useState } from "react"
 import { Category, Product } from "@prisma/client"
 import {
