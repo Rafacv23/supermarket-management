@@ -1,13 +1,12 @@
 "use client"
 
 import { useOrderDetails } from "@/lib/queries/orders"
-import { Loader, ClipboardList } from "lucide-react"
+import { ClipboardList } from "lucide-react"
 import { use } from "react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import {
@@ -22,6 +21,7 @@ import {
 import { OrderItem } from "@prisma/client"
 import Container from "@/components/Container"
 import completeOrder from "@/lib/actions/completeOrder"
+import Loading from "@/components/Loading"
 
 const FormSchema = z.object({
   items: z.array(z.string()).refine((value) => value.some((item) => item), {
@@ -45,11 +45,7 @@ export default function OrderPage({
   })
 
   if (isLoading) {
-    return (
-      <Container>
-        <Loader /> Cargando pedido...
-      </Container>
-    )
+    return <Loading />
   }
 
   if (isError) {
@@ -76,7 +72,6 @@ export default function OrderPage({
     <Container>
       <h1 className="text-2xl font-bold">Pedido #{orderId}</h1>
       <p>Detalles del pedido: {order.createdAt}</p>
-
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField

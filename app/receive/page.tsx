@@ -1,15 +1,8 @@
 "use client"
 
 import Container from "@/components/Container"
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer"
-import { Button, buttonVariants } from "@/components/ui/button"
+import FormTrigger from "@/components/FormTrigger"
+import { Button } from "@/components/ui/button"
 import { PackageCheck } from "lucide-react"
 import ReceiveProductForm from "@/components/forms/ReceiveProductForm"
 import { useState } from "react"
@@ -33,10 +26,8 @@ export default function ReceivePage() {
     try {
       setLoading(true)
       setError("")
-
       // Llamar a la acción del servidor
       await receiveProduct({ products: receivedProducts })
-
       // Limpia el store si el envío fue exitoso
       clearOrder()
       alert("Productos recibidos correctamente")
@@ -51,20 +42,12 @@ export default function ReceivePage() {
     <Container>
       <h1>Recibir Pedido</h1>
       <p>Añadir productos al almacen, tras recibirlos.</p>
-      <Drawer>
-        <DrawerTrigger className={buttonVariants({ variant: "default" })}>
-          <PackageCheck /> Recibir productos
-        </DrawerTrigger>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>Recepción de productos</DrawerTitle>
-            <DrawerDescription>
-              Añade todos los productos que hayas recibido.
-            </DrawerDescription>
-          </DrawerHeader>
-          <ReceiveProductForm />
-        </DrawerContent>
-      </Drawer>
+      <FormTrigger
+        icon={<PackageCheck />}
+        title="Recibir productos"
+        description="Añade todos los productos que hayas recibido."
+        form={<ReceiveProductForm />}
+      />
 
       <div>
         {receivedProducts.length === 0 ? null : (
