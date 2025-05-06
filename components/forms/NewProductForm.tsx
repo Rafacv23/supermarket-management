@@ -3,10 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { useState } from "react"
-import BarcodeScanner from "react-qr-barcode-scanner"
+import Scanner from "@/components/Scanner"
 import createProduct from "@/lib/actions/createProduct"
-
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -25,9 +23,8 @@ import {
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
-
+import { useScanner } from "@/hooks/useScanner"
 import { Camera, Save, Trash } from "lucide-react"
-
 import { Category } from "@prisma/client"
 
 // Esquema de validación
@@ -62,7 +59,14 @@ const formSchema = z.object({
 })
 
 export default function NewProductForm() {
-  const [scanning, setScanning] = useState<boolean>(false)
+  const { scanning, setScanning, handleScan: baseHandleScan } = useScanner()
+
+  function handleScan(barcode: string) {
+    form.setValue("barcode", barcode)
+    form.trigger("barcode")
+    baseHandleScan(barcode)
+    setScanning(false)
+  }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -89,13 +93,6 @@ export default function NewProductForm() {
     } catch (error) {
       toast.error("Error creando el producto")
       console.error("Error saving product:", error)
-    }
-  }
-
-  function handleScan(result: string) {
-    if (result) {
-      form.setValue("barcode", result)
-      setScanning(false)
     }
   }
 
@@ -170,17 +167,7 @@ export default function NewProductForm() {
           )}
         />
 
-        {scanning && (
-          <div className="mt-4">
-            <BarcodeScanner
-              width={400}
-              height={400}
-              onUpdate={(err, result) => {
-                if (result) handleScan(result.getText())
-              }}
-            />
-          </div>
-        )}
+        {scanning && <Scanner onDetected={handleScan} />}
 
         <FormField
           control={form.control}

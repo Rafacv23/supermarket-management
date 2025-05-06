@@ -17,7 +17,6 @@ import {
 import { buttonVariants } from "@/components/ui/button"
 import { useEffect, useState } from "react"
 import { Category, Product } from "@prisma/client"
-import BarcodeScanner from "react-qr-barcode-scanner"
 import {
   getProductByBarcode,
   getProductsByQuery,
@@ -25,12 +24,20 @@ import {
 } from "@/lib/queries/products"
 import ProductCard from "@/components/ProductCard"
 import SearchFilters from "@/components/SearchFilters"
+import { useScanner } from "@/hooks/useScanner"
+import Scanner from "@/components/Scanner"
 
 export default function ScanPage() {
   const [searchTerm, setSearchTerm] = useState<string>("")
   const [products, setProducts] = useState<Product[]>([])
-  const [scanning, setScanning] = useState<boolean>(false)
   const [category, setCategory] = useState<Category | undefined>()
+
+  const {
+    scanning,
+    setScanning,
+    searchTerm: scannedTerm,
+    handleScan,
+  } = useScanner(products)
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -57,13 +64,6 @@ export default function ScanPage() {
     }
   }
 
-  function handleScan(result: string) {
-    setSearchTerm(result)
-    setScanning(false)
-    const results = products.filter((p) => p.barcode === result)
-    setProducts(results)
-  }
-
   const {
     data: categoryProducts,
     isLoading,
@@ -86,7 +86,7 @@ export default function ScanPage() {
           <div className="flex gap-2">
             <Input
               type="search"
-              value={searchTerm}
+              value={searchTerm || scannedTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Nombre o código de barras"
             />
@@ -108,19 +108,8 @@ export default function ScanPage() {
         <SearchFilters category={category} setCategory={setCategory} />
       </div>
 
-      {scanning && (
-        <div className="mt-4 max-w-sm border rounded-md overflow-hidden">
-          <BarcodeScanner
-            width={300}
-            height={300}
-            onUpdate={(err, result) => {
-              if (result) {
-                handleScan(result.getText())
-              }
-            }}
-          />
-        </div>
-      )}
+      {scanning && <Scanner onDetected={handleScan} />}
+
       <Drawer>
         <DrawerTrigger className={buttonVariants({ variant: "default" })}>
           <Plus /> Añadir nuevo producto
@@ -146,7 +135,7 @@ export default function ScanPage() {
 
       {products.length > 0 ? (
         <div>
-          <h2>Productos encontrados para {searchTerm}</h2>
+          <h2>Productos encontrados para {searchTerm || scannedTerm}</h2>
           <ul>
             {products.map((product) => (
               <li key={product.id}>
