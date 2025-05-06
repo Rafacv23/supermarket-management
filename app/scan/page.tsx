@@ -3,8 +3,9 @@
 import Container from "@/components/Container"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Camera, Search, Plus, Loader } from "lucide-react"
+import { Camera, Search, Plus } from "lucide-react"
 import NewProductForm from "@/components/forms/NewProductForm"
+import Loading from "@/components/Loading"
 import {
   Drawer,
   DrawerContent,
@@ -135,12 +136,7 @@ export default function ScanPage() {
         </DrawerContent>
       </Drawer>
 
-      {isLoading && (
-        <div className="flex items-center gap-2 mt-4 text-muted-foreground">
-          <Loader className="w-4 h-4 animate-spin" />
-          Cargando productos...
-        </div>
-      )}
+      {isLoading && <Loading />}
 
       {isError && (
         <div className="text-red-500 mt-4">

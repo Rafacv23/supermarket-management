@@ -3,8 +3,9 @@
 import Container from "@/components/Container"
 import { SITE_TITLE } from "@/lib/constants"
 import { usePendingOrders } from "@/lib/queries/orders"
-import { Barcode, ClipboardList, Loader, PackageCheck } from "lucide-react"
+import { Barcode, ClipboardList, PackageCheck } from "lucide-react"
 import Link from "next/link"
+import Loading from "@/components/Loading"
 
 export default function Home() {
   const { data: pendingOrders, isLoading, isError } = usePendingOrders()
@@ -36,12 +37,7 @@ export default function Home() {
         </Link>
       </div>
 
-      {isLoading && (
-        <div className="flex items-center gap-2 mt-4 text-muted-foreground">
-          <Loader className="w-4 h-4 animate-spin" />
-          Cargando pedidos...
-        </div>
-      )}
+      {isLoading && <Loading />}
 
       {isError && (
         <div className="text-red-500 mt-4">

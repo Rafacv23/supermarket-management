@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/form"
 import { OrderItem } from "@prisma/client"
 import Container from "@/components/Container"
+import completeOrder from "@/lib/actions/completeOrder"
 
 const FormSchema = z.object({
   items: z.array(z.string()).refine((value) => value.some((item) => item), {
@@ -45,23 +46,30 @@ export default function OrderPage({
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center">
+      <Container>
         <Loader /> Cargando pedido...
-      </div>
+      </Container>
     )
   }
 
   if (isError) {
     return (
-      <div className="flex items-center justify-center">
+      <Container>
         <p>Error al cargar el pedido</p>
-      </div>
+      </Container>
     )
   }
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast.success("Productos actualizados correctamente")
-    console.log("Selected items:", data.items)
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    try {
+      await completeOrder(orderId)
+      console.log("Completing order with items:", data.items)
+      toast.success("Pedido completado correctamente")
+    } catch (error) {
+      console.error("Error al completar el pedido:", error)
+      toast.error("Error al completar el pedido")
+      return
+    }
   }
 
   return (
