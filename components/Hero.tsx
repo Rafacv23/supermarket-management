@@ -22,7 +22,7 @@ export default function Hero() {
           <span className="text-sm font-medium">Recepción de pedidos</span>
         </Link>
         <Link
-          href="/orders"
+          href="/upload"
           className="flex flex-col items-center justify-center p-6 bg-primary/10 rounded-lg border border-primary/20 hover:bg-primary/20 transition-colors"
         >
           <ClipboardList className="h-8 w-8 mb-2 text-primary" />

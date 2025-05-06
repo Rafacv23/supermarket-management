@@ -1,5 +1,6 @@
 import { Order, OrderItem, Product } from "@prisma/client"
 import { useQuery } from "@tanstack/react-query"
+import { prisma } from "../prisma"
 
 export function usePendingOrders() {
   return useQuery<Order[]>({
@@ -29,4 +30,19 @@ export function useOrderDetails(orderId: string) {
     },
     enabled: !!orderId,
   })
+}
+
+export async function getPendingOrders(): Promise<Order[] | null> {
+  try {
+    const orders = await prisma.order.findMany({
+      where: {
+        status: "PENDING",
+      },
+    })
+
+    return orders
+  } catch (error) {
+    console.error("Error fetching pending orders:", error)
+    return null
+  }
 }

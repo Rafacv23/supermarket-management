@@ -57,7 +57,6 @@ export default function UploadProductForm() {
   async function handleUpload() {
     setLoading(true)
     try {
-      console.log(order)
       await uploadProductAndCreateOrder({
         employeeId: "admin",
         products: order,

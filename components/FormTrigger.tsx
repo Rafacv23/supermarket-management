@@ -18,7 +18,7 @@ interface Props {
 export default function FormTrigger({ icon, title, description, form }: Props) {
   return (
     <Drawer>
-      <DrawerTrigger className={buttonVariants({ variant: "outline" })}>
+      <DrawerTrigger className={buttonVariants({ variant: "default" })}>
         {icon} {title}
       </DrawerTrigger>
       <DrawerContent>
