@@ -79,31 +79,33 @@ export default function ScanPage() {
     <Container>
       <h1>Escanear productos</h1>
       <p>Escanea o añade nuevos productos.</p>
-      <form onSubmit={onSubmit}>
-        Buscar productos
-        <div className="flex gap-2">
-          <Input
-            type="search"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Nombre o código de barras"
-          />
-          <Button type="submit" className="gap-1">
-            <Search className="w-4 h-4" />
-            Buscar
-          </Button>
-          <Button
-            type="button"
-            variant={scanning ? "destructive" : "outline"}
-            onClick={() => setScanning(!scanning)}
-            className="gap-1"
-          >
-            <Camera className="w-4 h-4" />
-            {scanning ? "Cerrar cámara" : "Escanear"}
-          </Button>
-        </div>
-      </form>
-      <SearchFilters category={category} setCategory={setCategory} />
+      <div>
+        <form onSubmit={onSubmit}>
+          Buscar productos
+          <div className="flex gap-2">
+            <Input
+              type="search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Nombre o código de barras"
+            />
+            <Button type="submit" className="gap-1">
+              <Search className="w-4 h-4" />
+              Buscar
+            </Button>
+            <Button
+              type="button"
+              variant={scanning ? "destructive" : "outline"}
+              onClick={() => setScanning(!scanning)}
+              className="gap-1"
+            >
+              <Camera className="w-4 h-4" />
+              {scanning ? "Cerrar cámara" : "Escanear"}
+            </Button>
+          </div>
+        </form>
+        <SearchFilters category={category} setCategory={setCategory} />
+      </div>
 
       {scanning && (
         <div className="mt-4 max-w-sm border rounded-md overflow-hidden">

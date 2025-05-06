@@ -3,12 +3,10 @@
 import { prisma } from "@/lib/prisma"
 
 interface ReceiveProductProps {
-  products: [
-    {
-      barcode: string
-      stock: number
-    }
-  ]
+  products: {
+    barcode: string
+    stock: number
+  }[]
 }
 
 export default async function receiveProduct({

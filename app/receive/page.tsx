@@ -24,8 +24,7 @@ import {
 import { useReceiveStore } from "@/store/receiveStore"
 
 export default function ReceivePage() {
-  const { receivedProducts, updateProductStock, removeProduct, clearOrder } =
-    useReceiveStore()
+  const { receivedProducts, removeProduct, clearOrder } = useReceiveStore()
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")

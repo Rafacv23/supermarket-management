@@ -31,23 +31,6 @@ export async function getProductsByQuery(query: string): Promise<Product[]> {
   }
 }
 
-export async function getProductsByCategory(
-  category: Category
-): Promise<Product[]> {
-  try {
-    const res = await fetch(`/api/products/category/${category}`)
-    if (!res.ok) {
-      console.error("Error fetching products:", res.statusText)
-      throw new Error("Failed to fetch products")
-    }
-    const data = await res.json()
-    return data
-  } catch (error) {
-    console.error("Failed to fetch data:", error)
-    throw new Error("Error fetching product data")
-  }
-}
-
 export function useProductsByCategory(category: Category | undefined) {
   return useQuery<Product[]>({
     queryKey: ["products", category],

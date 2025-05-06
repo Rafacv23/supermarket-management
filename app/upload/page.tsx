@@ -24,8 +24,7 @@ import {
 } from "@/components/ui/card"
 
 export default function UploadPage() {
-  const { order, updateProductStock, removeProduct, clearOrder } =
-    useOrderStore()
+  const { order, removeProduct, clearOrder } = useOrderStore()
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
@@ -35,13 +34,11 @@ export default function UploadPage() {
       setLoading(true)
       setError("")
 
-      // Llamar a la acción del servidor
-      const response = await uploadProduct({ products: order })
+      await uploadProduct({ products: order })
 
-      // Limpia el store si el envío fue exitoso
       clearOrder()
       alert("Productos recibidos correctamente")
-    } catch (err: any) {
+    } catch (err) {
       console.error(err)
       setError("Hubo un error al enviar los productos.")
     } finally {
