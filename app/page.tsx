@@ -1,41 +1,24 @@
 "use client"
 
 import Container from "@/components/Container"
-import { SITE_TITLE } from "@/lib/constants"
 import { usePendingOrders } from "@/lib/queries/orders"
-import { Barcode, ClipboardList, PackageCheck } from "lucide-react"
 import Link from "next/link"
 import Loading from "@/components/Loading"
+import Hero from "@/components/Hero"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 export default function Home() {
   const { data: pendingOrders, isLoading, isError } = usePendingOrders()
 
   return (
     <Container>
-      <h1>{SITE_TITLE}</h1>
-      <div className="grid grid-cols-2 gap-4">
-        <Link
-          href="/scan"
-          className="flex flex-col items-center justify-center p-6 bg-primary/10 rounded-lg border border-primary/20 hover:bg-primary/20 transition-colors"
-        >
-          <Barcode className="h-8 w-8 mb-2 text-primary" />
-          <span className="text-sm font-medium">Escanear producto</span>
-        </Link>
-        <Link
-          href="/receive"
-          className="flex flex-col items-center justify-center p-6 bg-primary/10 rounded-lg border border-primary/20 hover:bg-primary/20 transition-colors"
-        >
-          <PackageCheck className="h-8 w-8 mb-2 text-primary" />
-          <span className="text-sm font-medium">Recepción de pedidos</span>
-        </Link>
-        <Link
-          href="/orders"
-          className="flex flex-col items-center justify-center p-6 bg-primary/10 rounded-lg border border-primary/20 hover:bg-primary/20 transition-colors"
-        >
-          <ClipboardList className="h-8 w-8 mb-2 text-primary" />
-          <span className="text-sm font-medium">Subir mercancía</span>
-        </Link>
-      </div>
+      <Hero />
 
       {isLoading && <Loading />}
 
@@ -48,14 +31,22 @@ export default function Home() {
       {(pendingOrders ?? []).length > 0 ? (
         <div>
           <h2 className="text-lg font-bold mt-4">Pedidos pendientes</h2>
-          <ul className="mt-2">
+          <ul className="mt-2 grid grid-cols-1 gap-4">
             {(pendingOrders ?? []).map((order) => (
-              <li key={order.id} className="flex items-center gap-2">
+              <li key={order.id}>
                 <Link
                   href={`/orders/${order.id}`}
                   className="text-blue-500 hover:underline"
                 >
-                  Pedido {order.id}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>{order.id}</CardTitle>
+                      <CardDescription>
+                        {order.createdAt.toString()}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>Estado: {order.status}</CardContent>
+                  </Card>
                 </Link>
               </li>
             ))}

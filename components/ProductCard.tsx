@@ -7,7 +7,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Product } from "@prisma/client"
-import { Button, buttonVariants } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
   Banknote,
@@ -16,16 +15,9 @@ import {
   ClipboardList,
   PackageCheck,
 } from "lucide-react"
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer"
 import ReceiveProductForm from "@/components/forms/ReceiveProductForm"
 import UploadProductForm from "@/components/forms/UploadProductForm"
+import FormTrigger from "./FormTrigger"
 
 interface ProductCardProps {
   product: Product
@@ -59,35 +51,18 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
       </CardContent>
       <CardFooter className="flex justify-end gap-2">
-        <Drawer>
-          <DrawerTrigger className={buttonVariants({ variant: "outline" })}>
-            <PackageCheck size={16} /> Recibir
-          </DrawerTrigger>
-          <DrawerContent>
-            <DrawerHeader>
-              <DrawerTitle>Recepción de productos</DrawerTitle>
-              <DrawerDescription>
-                Añade todos los productos que hayas recibido.
-              </DrawerDescription>
-            </DrawerHeader>
-            <ReceiveProductForm barcode={product.barcode} />
-          </DrawerContent>
-        </Drawer>
-        <Drawer>
-          <DrawerTrigger className={buttonVariants({ variant: "default" })}>
-            <ClipboardList size={16} />
-            Subir
-          </DrawerTrigger>
-          <DrawerContent>
-            <DrawerHeader>
-              <DrawerTitle>Subir productos</DrawerTitle>
-              <DrawerDescription>
-                Añade todos los productos que vayas a subir desde el almacen.
-              </DrawerDescription>
-            </DrawerHeader>
-            <UploadProductForm barcode={product.barcode} />
-          </DrawerContent>
-        </Drawer>
+        <FormTrigger
+          icon={<PackageCheck size={16} />}
+          title="Recibir"
+          description="Añade todos los productos que hayas recibido"
+          form={<ReceiveProductForm barcode={product.barcode} />}
+        />
+        <FormTrigger
+          icon={<ClipboardList size={16} />}
+          title="Subir"
+          description="Añade todos los productos que vayas a subir desde el almacen"
+          form={<UploadProductForm />}
+        />
       </CardFooter>
     </Card>
   )
