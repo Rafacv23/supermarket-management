@@ -67,7 +67,9 @@ export default async function uploadProductAndCreateOrder({
         employeeId,
         orderItems: {
           create: validItems.map((item) => ({
-            productBarcode: item.productBarcode,
+            product: {
+              connect: { barcode: item.productBarcode }, // This should work because we are using `barcode` as the unique key
+            },
             quantity: item.quantity,
           })),
         },

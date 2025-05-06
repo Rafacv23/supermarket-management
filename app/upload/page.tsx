@@ -72,7 +72,7 @@ export default function UploadPage() {
         {order.length === 0 ? (
           <p>No hay productos.</p>
         ) : (
-          <ul className="space-y-2">
+          <ul className="space-y-2 mb-4">
             {order.map((product) => (
               <li key={product.barcode}>
                 <Card>
