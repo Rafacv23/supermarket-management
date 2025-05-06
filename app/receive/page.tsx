@@ -3,12 +3,21 @@
 import Container from "@/components/Container"
 import FormTrigger from "@/components/FormTrigger"
 import { Button } from "@/components/ui/button"
-import { PackageCheck } from "lucide-react"
+import {
+  ArrowDown,
+  Barcode,
+  Boxes,
+  Loader,
+  PackageCheck,
+  Save,
+  Trash,
+} from "lucide-react"
 import ReceiveProductForm from "@/components/forms/ReceiveProductForm"
 import { useState } from "react"
 import receiveProduct from "@/lib/actions/receiveProduct"
 import {
   Card,
+  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -49,42 +58,54 @@ export default function ReceivePage() {
         form={<ReceiveProductForm />}
       />
 
-      <div>
-        {receivedProducts.length === 0 ? null : (
-          <ul className="space-y-2">
+      {receivedProducts.length > 0 && (
+        <div>
+          <ul className="space-y-2 mb-4">
             {receivedProducts.map((product) => (
               <li key={product.barcode}>
                 <Card>
                   <CardHeader>
-                    <CardTitle className="font-medium">
-                      {product.barcode}
-                    </CardTitle>
-                    <CardDescription className="text-sm text-gray-600">
-                      Stock: {product.stock}
+                    <CardTitle>{product.name}</CardTitle>
+                    <CardDescription className="flex items-center gap-2">
+                      <Barcode size={16} /> {product.barcode}
                     </CardDescription>
                   </CardHeader>
+                  <CardContent>
+                    <p className="flex items-center gap-2">
+                      <Boxes size={16} /> Almacen {product.currentStock} uds
+                    </p>
+                    <p className="flex items-center gap-2">
+                      <ArrowDown size={16} /> Bajar {product.stock} uds
+                    </p>
+                  </CardContent>
                   <CardFooter>
                     <Button
                       onClick={() => removeProduct(product.barcode)}
                       variant="destructive"
                     >
-                      Eliminar
+                      <Trash size={16} /> Eliminar
                     </Button>
                   </CardFooter>
                 </Card>
               </li>
             ))}
           </ul>
-        )}
 
-        {error && <p className="text-red-500">{error}</p>}
+          {error && <p className="text-red-500">{error}</p>}
 
-        {receivedProducts.length > 0 && (
           <Button onClick={handleSendReceive} disabled={loading}>
-            {loading ? "Enviando..." : "Confirmar y Enviar"}
+            {loading ? (
+              <span className="animate-ping flex items-center gap-2">
+                <Loader size={16} />
+              </span>
+            ) : (
+              <span className="flex items-center gap-2">
+                <Save size={16} /> Confirmar y enviar
+              </span>
+            )}
           </Button>
-        )}
-      </div>
+        </div>
+      )}
     </Container>
   )
 }

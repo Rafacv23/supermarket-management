@@ -18,15 +18,20 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Trash, Save, UploadCloud, Camera } from "lucide-react"
+import { Trash, Save, UploadCloud, Camera, ArrowUp, Boxes } from "lucide-react"
 import uploadProductAndCreateOrder from "@/lib/actions/createOrder"
+import { getProductByBarcode } from "@/lib/queries/products"
+
+interface Props {
+  barcode?: string
+}
 
 const formSchema = z.object({
   barcode: z.string().min(2, "Código inválido"),
   stock: z.coerce.number().min(1, "El stock debe ser al menos 1"),
 })
 
-export default function UploadProductForm() {
+export default function UploadProductForm({ barcode }: Props) {
   const [loading, setLoading] = useState(false)
   const [scanning, setScanning] = useState<boolean>(false)
   const { order, addProduct, removeProduct, clearOrder } = useOrderStore()
@@ -35,15 +40,25 @@ export default function UploadProductForm() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolver: zodResolver(formSchema as any),
     defaultValues: {
-      barcode: "",
+      barcode: barcode || "",
       stock: 1,
     },
   })
 
-  function handleAdd(values: z.infer<typeof formSchema>) {
-    addProduct(values)
-    toast.success("Producto añadido")
-    form.reset()
+  async function handleAdd(values: z.infer<typeof formSchema>) {
+    setLoading(true)
+    try {
+      const product = await getProductByBarcode(values.barcode)
+      addProduct({ ...values, name: product.name, currentStock: product.stock })
+      console.log("Fetched product:", product)
+      toast.success("Producto añadido")
+    } catch (err) {
+      console.error("Error fetching product:", err)
+      toast.error("No se pudo encontrar el producto.")
+    } finally {
+      setLoading(false)
+      form.reset()
+    }
   }
 
   // Add product to list
@@ -149,7 +164,6 @@ export default function UploadProductForm() {
           </footer>
         </form>
       </Form>
-
       {order.length > 0 && (
         <div className="space-y-4">
           <h3 className="font-bold">Productos añadidos:</h3>
@@ -159,8 +173,12 @@ export default function UploadProductForm() {
                 key={product.barcode}
                 className="flex justify-between items-center border p-2 rounded"
               >
-                <span>
-                  {product.barcode} — {product.stock} uds
+                <h4 className="font-bold">{product.name}</h4>
+                <p className="flex items-center gap-2">
+                  <Boxes size={16} /> Almacen {product.currentStock} uds
+                </p>
+                <span className="flex items-center gap-2">
+                  <ArrowUp size={16} /> Subir {product.stock} uds
                 </span>
                 <Button
                   size="sm"

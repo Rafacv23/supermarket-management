@@ -26,6 +26,7 @@ import ProductCard from "@/components/ProductCard"
 import SearchFilters from "@/components/SearchFilters"
 import { useScanner } from "@/hooks/useScanner"
 import Scanner from "@/components/Scanner"
+import FormTrigger from "@/components/FormTrigger"
 
 export default function ScanPage() {
   const [searchTerm, setSearchTerm] = useState<string>("")
@@ -110,20 +111,12 @@ export default function ScanPage() {
 
       {scanning && <Scanner onDetected={handleScan} />}
 
-      <Drawer>
-        <DrawerTrigger className={buttonVariants({ variant: "default" })}>
-          <Plus /> Añadir nuevo producto
-        </DrawerTrigger>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>Añadir nuevo producto</DrawerTitle>
-            <DrawerDescription>
-              Añade nuevos productos a tu almacén.
-            </DrawerDescription>
-          </DrawerHeader>
-          <NewProductForm />
-        </DrawerContent>
-      </Drawer>
+      <FormTrigger
+        icon={<Plus />}
+        title="Añadir nuevo producto"
+        description="Añade nuevos productos a tu almacén"
+        form={<NewProductForm />}
+      />
 
       {isLoading && <Loading />}
 

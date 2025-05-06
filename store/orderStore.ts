@@ -2,7 +2,9 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
 interface OrderProduct {
+  name: string
   barcode: string
+  currentStock: number
   stock: number
 }
 
@@ -27,7 +29,12 @@ export const useOrderStore = create<OrderStore>()(
           set({
             order: get().order.map((p) =>
               p.barcode === product.barcode
-                ? { ...p, stock: p.stock + product.stock }
+                ? {
+                    ...p,
+                    name: product.name,
+                    currentStock: product.currentStock,
+                    stock: p.stock + product.stock,
+                  }
                 : p
             ),
           })

@@ -1,8 +1,7 @@
 import { Category, Product } from "@prisma/client"
 import { useQuery } from "@tanstack/react-query"
-import { prisma } from "../prisma"
 
-export async function getProductByBarcode(barcode: string): Promise<Product[]> {
+export async function getProductByBarcode(barcode: string): Promise<Product> {
   try {
     const res = await fetch(`/api/products/${barcode}`)
     if (!res.ok) {
@@ -43,25 +42,3 @@ export function useProductsByCategory(category: Category | undefined) {
     enabled: !!category, // don't run until category is defined
   })
 }
-
-// export async function getProductByBarcode(
-//   barcode: string
-// ): Promise<Product | null> {
-//   try {
-//     const product = await prisma.product.findUnique({
-//       where: {
-//         barcode: barcode,
-//       },
-//     })
-
-//     if (!product) {
-//       console.error("Product not found")
-//       return null
-//     }
-
-//     return product
-//   } catch (error) {
-//     console.error("Error fetching product:", error)
-//     return null
-//   }
-// }

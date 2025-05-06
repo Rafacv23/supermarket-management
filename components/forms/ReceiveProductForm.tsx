@@ -19,9 +19,17 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
-import { Camera, Save, Trash, UploadCloud } from "lucide-react"
+import {
+  ArrowDown,
+  Boxes,
+  Camera,
+  Save,
+  Trash,
+  UploadCloud,
+} from "lucide-react"
+import { getProductByBarcode } from "@/lib/queries/products"
 
-interface ReceiveProductFormProps {
+interface Props {
   barcode?: string
 }
 
@@ -30,19 +38,10 @@ const formSchema = z.object({
   barcode: z.string().min(2, {
     message: "El código de barras debe tener al menos 2 caracteres.",
   }),
-  stock: z
-    .union([
-      z.coerce
-        .number()
-        .min(0, { message: "El stock debe ser mayor o igual que 0." }),
-      z.literal("").transform(() => undefined),
-    ])
-    .transform((val) => (typeof val === "number" ? val : undefined)),
+  stock: z.coerce.number().min(1, "El stock debe ser al menos 1"),
 })
 
-export default function ReceiveProductForm({
-  barcode,
-}: ReceiveProductFormProps) {
+export default function ReceiveProductForm({ barcode }: Props) {
   const [scanning, setScanning] = useState<boolean>(false)
   const [loading, setLoading] = useState(false)
   const { receivedProducts, addProduct, removeProduct, clearOrder } =
@@ -53,17 +52,27 @@ export default function ReceiveProductForm({
     resolver: zodResolver(formSchema as any),
     defaultValues: {
       barcode: barcode || "",
-      stock: undefined,
+      stock: 1,
     },
   })
 
-  function handleAdd(values: z.infer<typeof formSchema>) {
+  async function handleAdd(values: z.infer<typeof formSchema>) {
     setLoading(true)
-    addProduct({ ...values, stock: values.stock ?? 0 })
-    toast.success("Producto añadido")
-    form.reset()
-    setLoading(false)
+
+    try {
+      const product = await getProductByBarcode(values.barcode)
+      addProduct({ ...values, name: product.name, currentStock: product.stock })
+      console.log("Fetched product:", product)
+      toast.success("Producto añadido")
+    } catch (error) {
+      console.error("Error fetching product:", error)
+      toast.error("No se pudo encontrar el producto.")
+    } finally {
+      setLoading(false)
+      form.reset()
+    }
   }
+
   // Add product to list
   function handleScan(result: string) {
     if (result) {
@@ -170,8 +179,12 @@ export default function ReceiveProductForm({
                 key={product.barcode}
                 className="flex justify-between items-center border p-2 rounded"
               >
-                <span>
-                  {product.barcode} — {product.stock} uds
+                <h4 className="font-bold">{product.name}</h4>
+                <p className="flex items-center gap-2">
+                  <Boxes size={16} /> Almacen {product.currentStock} uds
+                </p>
+                <span className="flex items-center gap-2">
+                  <ArrowDown size={16} /> Bajar {product.stock} uds
                 </span>
                 <Button
                   size="sm"

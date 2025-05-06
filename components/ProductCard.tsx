@@ -61,7 +61,13 @@ export default function ProductCard({ product }: ProductCardProps) {
           icon={<ClipboardList size={16} />}
           title="Subir"
           description="Añade todos los productos que vayas a subir desde el almacen"
-          form={<UploadProductForm />}
+          form={
+            <UploadProductForm
+              name={product.name}
+              barcode={product.barcode}
+              currentStock={product.stock}
+            />
+          }
         />
       </CardFooter>
     </Card>

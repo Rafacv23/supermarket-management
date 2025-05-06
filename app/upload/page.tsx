@@ -3,7 +3,15 @@
 import Container from "@/components/Container"
 import { useOrderStore } from "@/store/orderStore"
 import { useState } from "react"
-import { ClipboardList } from "lucide-react"
+import {
+  ArrowUp,
+  Barcode,
+  Boxes,
+  ClipboardList,
+  Loader,
+  Save,
+  Trash,
+} from "lucide-react"
 import UploadProductForm from "@/components/forms/UploadProductForm"
 import { Button } from "@/components/ui/button"
 import {
@@ -12,6 +20,7 @@ import {
   CardFooter,
   CardHeader,
   CardDescription,
+  CardContent,
 } from "@/components/ui/card"
 import uploadProductAndCreateOrder from "@/lib/actions/createOrder"
 import FormTrigger from "@/components/FormTrigger"
@@ -60,19 +69,25 @@ export default function UploadPage() {
               <li key={product.barcode}>
                 <Card>
                   <CardHeader>
-                    <CardTitle className="font-medium">
-                      {product.barcode}
-                    </CardTitle>
-                    <CardDescription className="text-sm text-gray-600">
-                      Stock: {product.stock}
+                    <CardTitle>{product.name}</CardTitle>
+                    <CardDescription className="flex items-center gap-2">
+                      <Barcode size={16} /> {product.barcode}
                     </CardDescription>
                   </CardHeader>
+                  <CardContent>
+                    <p className="flex items-center gap-2">
+                      <Boxes size={16} /> Almacen {product.currentStock} uds
+                    </p>
+                    <p className="flex items-center gap-2">
+                      <ArrowUp size={16} /> Subir {product.stock} uds
+                    </p>
+                  </CardContent>
                   <CardFooter>
                     <Button
                       onClick={() => removeProduct(product.barcode)}
                       variant="destructive"
                     >
-                      Eliminar
+                      <Trash size={16} /> Eliminar
                     </Button>
                   </CardFooter>
                 </Card>
@@ -83,7 +98,15 @@ export default function UploadPage() {
           {error && <p className="text-red-500">{error}</p>}
 
           <Button onClick={handleSendOrder} disabled={loading}>
-            {loading ? "Enviando..." : "Confirmar y Enviar"}
+            {loading ? (
+              <span className="animate-ping flex items-center gap-2">
+                <Loader size={16} />
+              </span>
+            ) : (
+              <span className="flex items-center gap-2">
+                <Save size={16} /> Confirmar y enviar
+              </span>
+            )}
           </Button>
         </div>
       )}
