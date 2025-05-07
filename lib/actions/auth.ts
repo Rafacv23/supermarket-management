@@ -5,7 +5,6 @@ import { prisma } from "../prisma"
 import { createSession, deleteSession } from "@/lib/session"
 import { redirect } from "next/navigation"
 import { Role } from "@prisma/client"
-import bcrypt from "bcrypt"
 
 export async function signup(state: FormState, formData: FormData) {
   const validatedFields = SignupFormSchema.safeParse({
