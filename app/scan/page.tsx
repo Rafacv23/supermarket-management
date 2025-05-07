@@ -44,7 +44,7 @@ export default function ScanPage() {
       const isBarcode = /^[0-9]{12,13}$/.test(searchTerm)
       if (isBarcode) {
         // Buscar por código de barras
-        products = await getProductByBarcode(searchTerm)
+        products = [await getProductByBarcode(searchTerm)]
       } else {
         // Buscar por nombre o consulta general
         products = await getProductsByQuery(searchTerm)
