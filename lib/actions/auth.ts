@@ -20,13 +20,13 @@ export async function signup(state: FormState, formData: FormData) {
     }
   }
 
-  const { name, password } = validatedFields.data
-  const hashedPassword = await bcrypt.hash(password, 10)
+  const { name } = validatedFields.data
+  //const hashedPassword = await bcrypt.hash(password, 10)
 
   const user = await prisma.user.findFirst({
     where: {
       name: name,
-      password: hashedPassword,
+      //password: hashedPassword,
       role: Role.Admin,
       //password: password,
     },
