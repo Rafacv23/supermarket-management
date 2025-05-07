@@ -59,7 +59,7 @@ export default function ReceivePage() {
       />
 
       {receivedProducts.length > 0 && (
-        <div>
+        <div className="w-full">
           <ul className="space-y-2 mb-4">
             {receivedProducts.map((product) => (
               <li key={product.barcode}>

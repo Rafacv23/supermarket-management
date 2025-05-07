@@ -63,7 +63,7 @@ export default function UploadPage() {
       />
 
       {order.length > 0 && (
-        <div>
+        <div className="w-full">
           <ul className="space-y-2 mb-4">
             {order.map((product) => (
               <li key={product.barcode}>

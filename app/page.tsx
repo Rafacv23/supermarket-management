@@ -20,7 +20,7 @@ export default async function Home() {
       <Hero />
       <Suspense fallback={<Loading />}>
         {pendingOrders ? (
-          <div>
+          <div className="w-full">
             <h2 className="text-lg font-bold mt-4">Pedidos pendientes</h2>
             <ul className="mt-2 grid grid-cols-1 gap-4">
               {(pendingOrders ?? []).map((order) => (
