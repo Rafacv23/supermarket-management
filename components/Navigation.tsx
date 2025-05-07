@@ -4,10 +4,10 @@ import { buttonVariants } from "@/components/ui/button"
 
 export default function Navigation() {
   return (
-    <footer className="row-start-3 rounded-2xl mb-2 mx-2 flex gap-[24px] flex-wrap items-center justify-center fixed bottom-0 left-0 right-0 bg-secondary text-secondary-foreground p-6">
+    <footer className="row-start-3 rounded-2xl mb-2 mx-2 flex gap-[24px] flex-wrap items-center justify-center fixed bottom-0 left-0 right-0 bg-card text-card-foreground p-6">
       <Link
         className={buttonVariants({
-          variant: "default",
+          variant: "secondary",
         })}
         href="/"
         title="Inicio"
@@ -17,7 +17,7 @@ export default function Navigation() {
       </Link>
       <Link
         className={buttonVariants({
-          variant: "default",
+          variant: "secondary",
         })}
         href="/scan"
         title="Escanear producto"
@@ -27,7 +27,7 @@ export default function Navigation() {
       </Link>
       <Link
         className={buttonVariants({
-          variant: "default",
+          variant: "secondary",
         })}
         href="/receive"
         title="Recepción de pedidos"
@@ -37,7 +37,7 @@ export default function Navigation() {
       </Link>
       <Link
         className={buttonVariants({
-          variant: "default",
+          variant: "secondary",
         })}
         href="/upload"
         title="Subir mercancía"
