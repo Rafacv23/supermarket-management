@@ -1,7 +1,7 @@
 "use client"
 
 import { useOrderDetails } from "@/lib/queries/orders"
-import { ClipboardList } from "lucide-react"
+import { Boxes, ClipboardList } from "lucide-react"
 import { use } from "react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -18,7 +18,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { OrderItem } from "@prisma/client"
 import Container from "@/components/Container"
 import completeOrder from "@/lib/actions/completeOrder"
 import Loading from "@/components/Loading"
@@ -72,7 +71,7 @@ export default function OrderPage({
   return (
     <Container>
       <h1 className="text-2xl font-bold">Pedido #{orderId}</h1>
-      <p>Detalles del pedido: {order.createdAt}</p>
+      <p>Detalles del pedido: {order?.createdAt.toString()}</p>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -87,7 +86,7 @@ export default function OrderPage({
                     montacargas.
                   </FormDescription>
                 </div>
-                {order.orderItems.map((item: OrderItem) => (
+                {order?.orderItems.map((item) => (
                   <FormField
                     key={item.id}
                     control={form.control}
@@ -112,10 +111,10 @@ export default function OrderPage({
                               }}
                             />
                           </FormControl>
-                          <FormLabel className="text-lg font-normal">
-                            {item.product.name}
-                            <span className="text-sm text-muted-foreground">
-                              Cantidad: {item.quantity}uds
+                          <FormLabel className="text-lg font-normal flex items-center gap-4">
+                            <p>{item.product.name}</p>
+                            <span className="text-sm text-muted-foreground flex items-center gap-2">
+                              <Boxes size={16} /> Cantidad: {item.quantity} uds
                             </span>
                           </FormLabel>
                         </FormItem>

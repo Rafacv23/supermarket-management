@@ -20,13 +20,25 @@ type OrderDetails = Order & {
   })[]
 }
 
+// Define the missing type
+type OrderItemWithProduct = OrderItem & {
+  product: Product
+}
+
 export function useOrderDetails(orderId: string) {
   return useQuery<OrderDetails>({
     queryKey: ["orders", orderId],
     queryFn: async () => {
       const res = await fetch(`/api/orders/${orderId}`)
       if (!res.ok) throw new Error("Failed to fetch order")
-      return res.json() as Promise<Order>
+      const order = await res.json()
+      return {
+        ...order,
+        orderItems: order.orderItems.map((item: OrderItemWithProduct) => ({
+          ...item,
+          product: item.product,
+        })),
+      } as OrderDetails
     },
     enabled: !!orderId,
   })
