@@ -4,107 +4,107 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: hsl(44 42.86% 93.14%);
-  --foreground: hsl(28.57 16.54% 24.9%);
-  --card: hsl(42 100% 98.04%);
-  --card-foreground: hsl(28.57 16.54% 24.9%);
-  --popover: hsl(42 100% 98.04%);
-  --popover-foreground: hsl(28.57 16.54% 24.9%);
-  --primary: hsl(30 33.87% 48.63%);
-  --primary-foreground: hsl(0 0% 100%);
-  --secondary: hsl(40.65 34.83% 82.55%);
-  --secondary-foreground: hsl(28.97 18.71% 30.39%);
-  --muted: hsl(39 34.48% 88.63%);
-  --muted-foreground: hsl(32.31 18.48% 41.37%);
-  --accent: hsl(42.86 32.81% 74.9%);
-  --accent-foreground: hsl(28.57 16.54% 24.9%);
-  --destructive: hsl(9.84 54.7% 45.88%);
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(0 0% 14.5%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(0 0% 14.5%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(0 0% 14.5%);
+  --primary: hsl(0 0% 20.5%);
+  --primary-foreground: hsl(0 0% 98.5%);
+  --secondary: hsl(0 0% 97%);
+  --secondary-foreground: hsl(0 0% 20.5%);
+  --muted: hsl(0 0% 97%);
+  --muted-foreground: hsl(0 0% 55.6%);
+  --accent: hsl(0 0% 97%);
+  --accent-foreground: hsl(0 0% 20.5%);
+  --destructive: hsl(0 80% 57.7%);
   --destructive-foreground: hsl(0 0% 100%);
-  --border: hsl(40 31.43% 79.41%);
-  --input: hsl(40 31.43% 79.41%);
-  --ring: hsl(30 33.87% 48.63%);
-  --chart-1: hsl(30 33.87% 48.63%);
-  --chart-2: hsl(31.38 29.95% 42.55%);
-  --chart-3: hsl(33.68 32.95% 33.92%);
-  --chart-4: hsl(29.12 30.91% 56.86%);
-  --chart-5: hsl(30 33.68% 62.75%);
-  --sidebar: hsl(39 34.48% 88.63%);
-  --sidebar-foreground: hsl(28.57 16.54% 24.9%);
-  --sidebar-primary: hsl(30 33.87% 48.63%);
-  --sidebar-primary-foreground: hsl(0 0% 100%);
-  --sidebar-accent: hsl(42.86 32.81% 74.9%);
-  --sidebar-accent-foreground: hsl(28.57 16.54% 24.9%);
-  --sidebar-border: hsl(40 31.43% 79.41%);
-  --sidebar-ring: hsl(30 33.87% 48.63%);
+  --border: hsl(0 0% 92.2%);
+  --input: hsl(0 0% 92.2%);
+  --ring: hsl(0 0% 70.8%);
+  --chart-1: hsl(41 78% 64.6%);
+  --chart-2: hsl(185 68% 60%);
+  --chart-3: hsl(227 65% 39.8%);
+  --chart-4: hsl(84 63% 82.8%);
+  --chart-5: hsl(70 68% 76.9%);
+  --sidebar: hsl(0 0% 98.5%);
+  --sidebar-foreground: hsl(0 0% 14.5%);
+  --sidebar-primary: hsl(0 0% 20.5%);
+  --sidebar-primary-foreground: hsl(0 0% 98.5%);
+  --sidebar-accent: hsl(0 0% 97%);
+  --sidebar-accent-foreground: hsl(0 0% 20.5%);
+  --sidebar-border: hsl(0 0% 92.2%);
+  --sidebar-ring: hsl(0 0% 70.8%);
   --font-sans: JetBrains Mono, monospace;
-  --font-serif: Lora, serif;
-  --font-mono: IBM Plex Mono, monospace;
-  --radius: 0.725rem;
-  --shadow-2xs: 2px 3px 5px 0px hsl(28 13% 20% / 0.06);
-  --shadow-xs: 2px 3px 5px 0px hsl(28 13% 20% / 0.06);
-  --shadow-sm: 2px 3px 5px 0px hsl(28 13% 20% / 0.12),
-    2px 1px 2px -1px hsl(28 13% 20% / 0.12);
-  --shadow: 2px 3px 5px 0px hsl(28 13% 20% / 0.12),
-    2px 1px 2px -1px hsl(28 13% 20% / 0.12);
-  --shadow-md: 2px 3px 5px 0px hsl(28 13% 20% / 0.12),
-    2px 2px 4px -1px hsl(28 13% 20% / 0.12);
-  --shadow-lg: 2px 3px 5px 0px hsl(28 13% 20% / 0.12),
-    2px 4px 6px -1px hsl(28 13% 20% / 0.12);
-  --shadow-xl: 2px 3px 5px 0px hsl(28 13% 20% / 0.12),
-    2px 8px 10px -1px hsl(28 13% 20% / 0.12);
-  --shadow-2xl: 2px 3px 5px 0px hsl(28 13% 20% / 0.3);
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  --radius: 0.625rem;
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
+    0 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
+    0 2px 4px -1px hsl(0 0% 0% / 0.1);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
+    0 4px 6px -1px hsl(0 0% 0% / 0.1);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
+    0 8px 10px -1px hsl(0 0% 0% / 0.1);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
 }
 
 .dark {
-  --background: hsl(25 15.38% 15.29%);
-  --foreground: hsl(39 34.48% 88.63%);
-  --card: hsl(25.71 13.73% 20%);
-  --card-foreground: hsl(39 34.48% 88.63%);
-  --popover: hsl(25.71 13.73% 20%);
-  --popover-foreground: hsl(39 34.48% 88.63%);
-  --primary: hsl(30 33.68% 62.75%);
-  --primary-foreground: hsl(25 15.38% 15.29%);
-  --secondary: hsl(24.71 12.98% 25.69%);
-  --secondary-foreground: hsl(39 34.48% 88.63%);
-  --muted: hsl(25.71 13.73% 20%);
-  --muted-foreground: hsl(38.4 17.73% 72.35%);
-  --accent: hsl(24.44 17.88% 29.61%);
-  --accent-foreground: hsl(39 34.48% 88.63%);
-  --destructive: hsl(9.84 54.7% 45.88%);
-  --destructive-foreground: hsl(0 0% 100%);
-  --border: hsl(24.71 12.98% 25.69%);
-  --input: hsl(24.71 12.98% 25.69%);
-  --ring: hsl(30 33.68% 62.75%);
-  --chart-1: hsl(30 33.68% 62.75%);
-  --chart-2: hsl(29.12 30.91% 56.86%);
-  --chart-3: hsl(30 33.87% 48.63%);
-  --chart-4: hsl(31.38 29.95% 42.55%);
-  --chart-5: hsl(33.68 32.95% 33.92%);
-  --sidebar: hsl(25 15.38% 15.29%);
-  --sidebar-foreground: hsl(39 34.48% 88.63%);
-  --sidebar-primary: hsl(30 33.68% 62.75%);
-  --sidebar-primary-foreground: hsl(25 15.38% 15.29%);
-  --sidebar-accent: hsl(24.44 17.88% 29.61%);
-  --sidebar-accent-foreground: hsl(39 34.48% 88.63%);
-  --sidebar-border: hsl(24.71 12.98% 25.69%);
-  --sidebar-ring: hsl(30 33.68% 62.75%);
+  --background: hsl(252 11.11% 8.82%);
+  --foreground: hsl(0 0% 98%);
+  --card: hsl(250 11.54% 10.2%);
+  --card-foreground: hsl(0 0% 98%);
+  --popover: hsl(240 10% 3.9%);
+  --popover-foreground: hsl(0 0% 98%);
+  --primary: hsl(250 3.8% 69.02%);
+  --primary-foreground: hsl(240 5.9% 10%);
+  --secondary: hsl(240 3.7% 15.9%);
+  --secondary-foreground: hsl(0 0% 98%);
+  --muted: hsl(240 3.7% 15.9%);
+  --muted-foreground: hsl(240 5% 64.9%);
+  --accent: hsl(42.86 50.33% 70%);
+  --accent-foreground: hsl(240 5.9% 10%);
+  --destructive: hsl(0 62.8% 30.6%);
+  --destructive-foreground: hsl(0 85.7% 97.3%);
+  --border: hsl(240 3.7% 15.9%);
+  --input: hsl(240 3.7% 15.9%);
+  --ring: hsl(240 4.9% 83.9%);
+  --chart-1: hsl(220 70% 50%);
+  --chart-2: hsl(160 60% 45%);
+  --chart-3: hsl(30 80% 55%);
+  --chart-4: hsl(280 65% 60%);
+  --chart-5: hsl(340 75% 55%);
+  --sidebar: hsl(250 11.54% 10.2%);
+  --sidebar-foreground: hsl(250 3.8% 69.02%);
+  --sidebar-primary: hsl(224.3 76.3% 48%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(240 3.7% 15.9%);
+  --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-border: hsl(240 3.7% 15.9%);
+  --sidebar-ring: hsl(240 4.9% 83.9%);
   --font-sans: JetBrains Mono, monospace;
-  --font-serif: Lora, serif;
-  --font-mono: IBM Plex Mono, monospace;
-  --radius: 0.725rem;
-  --shadow-2xs: 2px 3px 5px 0px hsl(28 13% 20% / 0.06);
-  --shadow-xs: 2px 3px 5px 0px hsl(28 13% 20% / 0.06);
-  --shadow-sm: 2px 3px 5px 0px hsl(28 13% 20% / 0.12),
-    2px 1px 2px -1px hsl(28 13% 20% / 0.12);
-  --shadow: 2px 3px 5px 0px hsl(28 13% 20% / 0.12),
-    2px 1px 2px -1px hsl(28 13% 20% / 0.12);
-  --shadow-md: 2px 3px 5px 0px hsl(28 13% 20% / 0.12),
-    2px 2px 4px -1px hsl(28 13% 20% / 0.12);
-  --shadow-lg: 2px 3px 5px 0px hsl(28 13% 20% / 0.12),
-    2px 4px 6px -1px hsl(28 13% 20% / 0.12);
-  --shadow-xl: 2px 3px 5px 0px hsl(28 13% 20% / 0.12),
-    2px 8px 10px -1px hsl(28 13% 20% / 0.12);
-  --shadow-2xl: 2px 3px 5px 0px hsl(28 13% 20% / 0.3);
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  --radius: 0.625rem;
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
+    0 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
+    0 2px 4px -1px hsl(0 0% 0% / 0.1);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
+    0 4px 6px -1px hsl(0 0% 0% / 0.1);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
+    0 8px 10px -1px hsl(0 0% 0% / 0.1);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
 }
 
 @theme inline {

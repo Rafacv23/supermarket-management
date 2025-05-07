@@ -1,8 +1,8 @@
 {
   "name": "Alcampo Bustarviejo",
   "short_name": "Alcampo",
-  "theme_color": "#FFFFFF",
-  "background_color": "#FFFFFF",
+  "theme_color": "#151419",
+  "background_color": "#151419",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
