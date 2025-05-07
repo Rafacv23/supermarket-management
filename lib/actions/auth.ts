@@ -4,6 +4,8 @@ import { FormState, SignupFormSchema } from "@/lib/definitions"
 import { prisma } from "../prisma"
 import { createSession, deleteSession } from "@/lib/session"
 import { redirect } from "next/navigation"
+import { Role } from "@prisma/client"
+import bcrypt from "bcrypt"
 
 export async function signup(state: FormState, formData: FormData) {
   const validatedFields = SignupFormSchema.safeParse({
@@ -19,11 +21,14 @@ export async function signup(state: FormState, formData: FormData) {
   }
 
   const { name, password } = validatedFields.data
+  const hashedPassword = await bcrypt.hash(password, 10)
 
-  const user = await prisma.user.findUnique({
+  const user = await prisma.user.findFirst({
     where: {
       name: name,
-      password: password,
+      password: hashedPassword,
+      role: Role.Admin,
+      //password: password,
     },
   })
 
