@@ -7,7 +7,6 @@ import { revalidatePath } from "next/cache"
 export default async function completeOrder(orderId: string) {
   try {
     // fetch the order from the database
-
     const order = await prisma.order.findUnique({
       where: { id: orderId },
       include: {
