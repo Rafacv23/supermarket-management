@@ -45,7 +45,11 @@ export default function OrderPage({
   })
 
   if (isLoading) {
-    return <Loading />
+    return (
+      <Container>
+        <Loading />
+      </Container>
+    )
   }
 
   if (isError) {
@@ -70,8 +74,13 @@ export default function OrderPage({
 
   return (
     <Container>
-      <h1 className="text-2xl font-bold">Pedido #{orderId}</h1>
-      <p>Detalles del pedido: {order?.createdAt.toString()}</p>
+      <header className="flex items-start flex-col gap-4">
+        <h1 className="text-2xl font-bold ">Pedido</h1>
+        <p>
+          Fecha del pedido:
+          {order?.createdAt.toString()}
+        </p>
+      </header>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -111,7 +120,13 @@ export default function OrderPage({
                               }}
                             />
                           </FormControl>
-                          <FormLabel className="text-lg font-normal flex items-center gap-4">
+                          <FormLabel
+                            className={
+                              field.value?.includes(item.id)
+                                ? "line-through text-lg font-normal flex items-center gap-4"
+                                : "text-lg font-normal flex items-center gap-4"
+                            }
+                          >
                             <p>{item.product.name}</p>
                             <span className="text-sm text-muted-foreground flex items-center gap-2">
                               <Boxes size={16} /> Cantidad: {item.quantity} uds
@@ -126,7 +141,7 @@ export default function OrderPage({
               </FormItem>
             )}
           />
-          <Button type="submit">
+          <Button type="submit" className="w-full" disabled={isLoading}>
             <ClipboardList /> Pedido Completado
           </Button>
         </form>

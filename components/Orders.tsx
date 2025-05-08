@@ -51,7 +51,7 @@ function OrderCard({ order }: { order: Order }) {
     <Link href={`/orders/${order.id}`}>
       <Card className="hover:bg-secondary hover:transition-colors ease-in-out">
         <CardHeader>
-          <CardTitle>Pedido: {order.id}</CardTitle>
+          <CardTitle>Pedido</CardTitle>
           <CardDescription>{formattedDate}</CardDescription>
         </CardHeader>
         <CardContent>Estado: PENDIENTE</CardContent>
