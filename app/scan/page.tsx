@@ -3,7 +3,7 @@
 import Container from "@/components/Container"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Camera, Search, Plus, Loader } from "lucide-react"
+import { Camera, Search, Plus, Loader, Barcode } from "lucide-react"
 import NewProductForm from "@/components/forms/NewProductForm"
 import Loading from "@/components/Loading"
 import { Suspense, useEffect, useState } from "react"
@@ -23,6 +23,7 @@ export default function ScanPage() {
   const [searchTerm, setSearchTerm] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(false)
   const [products, setProducts] = useState<Product[]>([])
+  const [hasSearched, setHasSearched] = useState<boolean>(false)
   const [category, setCategory] = useState<Category | undefined>()
 
   const {
@@ -35,6 +36,7 @@ export default function ScanPage() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
+    setHasSearched(true)
     try {
       if (!searchTerm || searchTerm.length < 1) {
         console.error("No se ha introducido un código de barras")
@@ -74,7 +76,9 @@ export default function ScanPage() {
 
   return (
     <Container>
-      <h1>Escanear productos</h1>
+      <h1 className="flex items-center gap-2">
+        <Barcode /> Escanear productos
+      </h1>
       <p>Escanea o añade nuevos productos.</p>
       <div>
         <div className="mb-4">
@@ -157,7 +161,7 @@ export default function ScanPage() {
           </div>
         </Suspense>
       ) : (
-        <p>No se han encontrado productos</p>
+        hasSearched && <p>No se han encontrado productos</p>
       )}
     </Container>
   )

@@ -1,6 +1,7 @@
 "use server"
 
 import { prisma } from "@/lib/prisma"
+import { revalidatePath } from "next/cache"
 
 interface UploadProductProps {
   employeeId: string
@@ -78,6 +79,8 @@ export default async function uploadProductAndCreateOrder({
         orderItems: true,
       },
     })
+
+    revalidatePath("/")
 
     return order
   } catch (error) {

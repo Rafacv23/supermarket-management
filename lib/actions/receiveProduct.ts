@@ -1,6 +1,7 @@
 "use server"
 
 import { prisma } from "@/lib/prisma"
+import { revalidatePath } from "next/cache"
 
 interface ReceiveProductProps {
   products: {
@@ -47,6 +48,8 @@ export default async function receiveProduct({
     const updatedProducts = await Promise.all(updatePromises)
 
     // Filter out null values (products that did not exist and were skipped)
+    revalidatePath("/scan")
+
     return updatedProducts.filter(Boolean)
   } catch (error) {
     console.error("Error receiving products:", error)

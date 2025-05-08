@@ -2,6 +2,7 @@
 
 import { Category } from "@prisma/client"
 import { prisma } from "../prisma"
+import { revalidatePath } from "next/cache"
 
 interface CreateProductProps {
   name: string
@@ -13,6 +14,7 @@ interface CreateProductProps {
 
 export default async function createProduct(product: CreateProductProps) {
   try {
+    revalidatePath("/scan")
     return await prisma.product.create({
       data: product,
     })

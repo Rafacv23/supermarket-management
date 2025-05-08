@@ -53,7 +53,9 @@ export default function UploadPage() {
 
   return (
     <Container>
-      <h1>Subir mercancía</h1>
+      <h1 className="flex items-center gap-2">
+        <ClipboardList /> Subir mercancía
+      </h1>
       <p>Sube los productos desde el almacen.</p>
       <FormTrigger
         title="Subir"
@@ -97,7 +99,11 @@ export default function UploadPage() {
 
           {error && <p className="text-red-500">{error}</p>}
 
-          <Button onClick={handleSendOrder} disabled={loading}>
+          <Button
+            onClick={handleSendOrder}
+            disabled={loading}
+            className="w-full"
+          >
             {loading ? (
               <span className="animate-ping flex items-center gap-2">
                 <Loader size={16} />

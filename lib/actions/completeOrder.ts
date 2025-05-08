@@ -34,8 +34,6 @@ export default async function completeOrder(orderId: string) {
       data: { status: "COMPLETED" },
     })
 
-    console.log("Order completed successfully")
-
     revalidatePath(`/`)
   } catch (error) {
     console.error("Error completing order:", error)

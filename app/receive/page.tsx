@@ -49,7 +49,9 @@ export default function ReceivePage() {
   }
   return (
     <Container>
-      <h1>Recibir Pedido</h1>
+      <h1 className="flex items-center gap-2">
+        <PackageCheck /> Recibir Pedido
+      </h1>
       <p>Añadir productos al almacen, tras recibirlos.</p>
       <FormTrigger
         icon={<PackageCheck />}
@@ -93,7 +95,11 @@ export default function ReceivePage() {
 
           {error && <p className="text-red-500">{error}</p>}
 
-          <Button onClick={handleSendReceive} disabled={loading}>
+          <Button
+            onClick={handleSendReceive}
+            disabled={loading}
+            className="w-full"
+          >
             {loading ? (
               <span className="animate-ping flex items-center gap-2">
                 <Loader size={16} />
