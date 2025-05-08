@@ -18,7 +18,15 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Trash, Save, UploadCloud, Camera, ArrowUp, Boxes } from "lucide-react"
+import {
+  Trash,
+  Save,
+  UploadCloud,
+  Camera,
+  ArrowUp,
+  Boxes,
+  Loader,
+} from "lucide-react"
 import uploadProductAndCreateOrder from "@/lib/actions/createOrder"
 import { getProductByBarcode } from "@/lib/queries/products"
 
@@ -157,12 +165,28 @@ export default function UploadProductForm({ barcode }: Props) {
 
           <footer className="flex gap-4 pt-4 justify-end">
             <Button type="reset" variant="outline" disabled={loading}>
-              <Trash />
-              Borrar
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <Loader size={16} className="animate-spin" />
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  <Trash size={16} />
+                  Eliminar
+                </span>
+              )}
             </Button>
             <Button type="submit" disabled={loading}>
-              <Save className="w-4 h-4 mr-2" />
-              Añadir
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <Loader size={16} className="animate-spin" />
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  <Save size={16} />
+                  Añadir
+                </span>
+              )}
             </Button>
           </footer>
         </form>
@@ -174,36 +198,56 @@ export default function UploadProductForm({ barcode }: Props) {
             {order.map((product) => (
               <li
                 key={product.barcode}
-                className="flex justify-between items-center border p-2 rounded"
+                className="flex flex-col items-start border p-2 rounded"
               >
-                <h4 className="font-bold">{product.name}</h4>
-                <p className="flex items-center gap-2">
-                  <Boxes size={16} /> Almacen {product.currentStock} uds
-                </p>
-                <span className="flex items-center gap-2">
-                  <ArrowUp size={16} /> Subir {product.stock} uds
-                </span>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => removeProduct(product.barcode)}
-                  disabled={loading}
-                >
-                  <Trash className="w-4 h-4" />
-                </Button>
+                <header className="flex justify-between items-center w-full mb-4">
+                  <h4 className="font-bold">{product.name}</h4>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    disabled={loading}
+                    onClick={() => removeProduct(product.barcode)}
+                  >
+                    <Trash className="w-4 h-4" />
+                  </Button>
+                </header>
+                <div>
+                  <p className="flex items-center gap-2">
+                    <Boxes size={16} /> Almacen {product.currentStock} uds
+                  </p>
+                  <span className="flex items-center gap-2">
+                    <ArrowUp size={16} /> Subir {product.stock} uds
+                  </span>
+                </div>
               </li>
             ))}
           </ul>
 
           <div className="flex gap-4 justify-end">
             <Button variant="outline" onClick={clearOrder} disabled={loading}>
-              <Trash className="w-4 h-4 mr-1" />
-              Vaciar lista
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <Loader size={16} className="animate-spin" />
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  <Trash size={16} />
+                  Vaciar lista
+                </span>
+              )}
             </Button>
 
             <Button onClick={handleUpload} disabled={loading}>
-              <UploadCloud className="w-4 h-4 mr-1" />
-              Confirmar y guardar
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <Loader size={16} className="animate-spin" />
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  <UploadCloud size={16} />
+                  Confirmar y guardar
+                </span>
+              )}
             </Button>
           </div>
         </div>

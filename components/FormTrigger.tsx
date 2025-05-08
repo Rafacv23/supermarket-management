@@ -17,11 +17,11 @@ interface Props extends React.ComponentPropsWithoutRef<"form"> {
 
 export default function FormTrigger({ icon, title, description, form }: Props) {
   return (
-    <Drawer>
+    <Drawer repositionInputs>
       <DrawerTrigger className={buttonVariants({ variant: "default" })}>
         {icon} {title}
       </DrawerTrigger>
-      <DrawerContent className="min-h-2/3 px-2">
+      <DrawerContent className="min-h-3/4 px-2 mb-8">
         <DrawerHeader>
           <DrawerTitle>{title}</DrawerTitle>
           <DrawerDescription>{description}</DrawerDescription>

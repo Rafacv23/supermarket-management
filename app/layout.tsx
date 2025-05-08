@@ -29,7 +29,7 @@ export default function RootLayout({
           {children}
           <Navigation />
           <Suspense>
-            <Toaster />
+            <Toaster closeButton richColors position="top-center" />
           </Suspense>
         </ClientFetchProvider>
       </body>
