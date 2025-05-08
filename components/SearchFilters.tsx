@@ -18,14 +18,13 @@ export default function SearchFilters({
 }: SearchFiltersProps) {
   return (
     <nav>
-      <h4>Categoría</h4>
       <form>
         <Select
           value={category}
           onValueChange={(value) => setCategory(value as Category)}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Categoría del producto" />
+            <SelectValue placeholder="Categoría" />
           </SelectTrigger>
           <SelectContent>
             {Object.values(Category).map((cat) => (

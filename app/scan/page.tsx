@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Camera, Search, Plus, Loader } from "lucide-react"
 import NewProductForm from "@/components/forms/NewProductForm"
 import Loading from "@/components/Loading"
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { Category, Product } from "@prisma/client"
 import {
   getProductByBarcode,
@@ -87,6 +87,23 @@ export default function ScanPage() {
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Nombre o código de barras"
             />
+            <SearchFilters
+              aria-disabled={loading}
+              category={category}
+              setCategory={setCategory}
+            />
+            <Button
+              type="button"
+              variant={scanning ? "destructive" : "secondary"}
+              onClick={() => setScanning(!scanning)}
+              className="gap-2"
+              disabled={loading}
+            >
+              <Camera size={16} />
+              {scanning ? "Cerrar cámara" : "Escanear"}
+            </Button>
+          </div>
+          <footer className="flex justify-between mt-4">
             <Button type="submit" className="gap-1" disabled={loading}>
               {loading ? (
                 <span className="flex items-center gap-2">
@@ -99,34 +116,18 @@ export default function ScanPage() {
                 </span>
               )}
             </Button>
-            <Button
-              type="button"
-              variant={scanning ? "destructive" : "secondary"}
-              onClick={() => setScanning(!scanning)}
-              className="gap-2"
-              disabled={loading}
-            >
-              <Camera size={16} />
-              {scanning ? "Cerrar cámara" : "Escanear"}
-            </Button>
-          </div>
+            <FormTrigger
+              aria-disabled={loading}
+              icon={<Plus />}
+              title="Añadir nuevo producto"
+              description="Añade nuevos productos a tu almacén"
+              form={<NewProductForm />}
+            />
+          </footer>
         </form>
-        <SearchFilters
-          aria-disabled={loading}
-          category={category}
-          setCategory={setCategory}
-        />
       </div>
 
       {scanning && <Scanner onDetected={handleScan} />}
-
-      <FormTrigger
-        aria-disabled={loading}
-        icon={<Plus />}
-        title="Añadir nuevo producto"
-        description="Añade nuevos productos a tu almacén"
-        form={<NewProductForm />}
-      />
 
       {isLoading && <Loading />}
 
@@ -137,18 +138,20 @@ export default function ScanPage() {
       )}
 
       {products.length > 0 ? (
-        <div className="w-full">
-          <h2 className="mb-4 font-bold">
-            Productos encontrados para: {searchTerm || scannedTerm}
-          </h2>
-          <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {products.map((product) => (
-              <li key={product.id}>
-                <ProductCard product={product} />
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Suspense fallback={<Loading />}>
+          <div className="w-full">
+            <h2 className="mb-4 font-bold">
+              Productos encontrados para: {searchTerm || scannedTerm}
+            </h2>
+            <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {products.map((product) => (
+                <li key={product.id}>
+                  <ProductCard product={product} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Suspense>
       ) : (
         <p>No se han encontrado productos</p>
       )}
