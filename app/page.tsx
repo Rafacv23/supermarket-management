@@ -19,7 +19,7 @@ export default async function Home() {
     <Container>
       <Hero />
       <Suspense fallback={<Loading />}>
-        {pendingOrders ? (
+        {(pendingOrders?.length ?? 0) > 0 ? (
           <div className="w-full">
             <h2 className="text-lg font-bold mt-4">Pedidos pendientes</h2>
             <ul className="mt-2 grid grid-cols-1 gap-4">

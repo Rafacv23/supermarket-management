@@ -19,7 +19,7 @@ export default function Hero() {
           className="flex flex-col items-center justify-center p-6 bg-primary/10 rounded-lg border border-primary/20 hover:bg-primary/20 transition-colors"
         >
           <PackageCheck className="h-8 w-8 mb-2 text-primary" />
-          <span className="text-sm font-medium">Recepción de pedidos</span>
+          <span className="text-sm font-medium">Bajar mercancía</span>
         </Link>
         <Link
           href="/upload"

@@ -77,45 +77,52 @@ export default function ScanPage() {
       <h1>Escanear productos</h1>
       <p>Escanea o añade nuevos productos.</p>
       <div>
-        <form onSubmit={onSubmit} className="mb-4">
-          Buscar productos
-          <div className="flex gap-2">
-            <Input
-              type="search"
-              value={searchTerm || scannedTerm}
-              disabled={loading}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Nombre o código de barras"
-            />
-            <SearchFilters
-              aria-disabled={loading}
-              category={category}
-              setCategory={setCategory}
-            />
-            <Button
-              type="button"
-              variant={scanning ? "destructive" : "secondary"}
-              onClick={() => setScanning(!scanning)}
-              className="gap-2"
-              disabled={loading}
-            >
-              <Camera size={16} />
-              {scanning ? "Cerrar cámara" : "Escanear"}
-            </Button>
-          </div>
-          <footer className="flex justify-between mt-4">
-            <Button type="submit" className="gap-1" disabled={loading}>
-              {loading ? (
-                <span className="flex items-center gap-2">
-                  <Loader size={16} className="w-4 h-4 animate-spin" />{" "}
-                  Buscando...
-                </span>
-              ) : (
-                <span className="flex items-center gap-2">
-                  <Search size={16} className="w-4 h-4" /> Buscar
-                </span>
-              )}
-            </Button>
+        <div className="mb-4">
+          <form onSubmit={onSubmit}>
+            <p className="mb-2">Buscar productos</p>
+            <div className="flex gap-2">
+              <Input
+                type="search"
+                value={searchTerm || scannedTerm}
+                disabled={loading}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Nombre o código de barras"
+              />
+              <SearchFilters
+                aria-disabled={loading}
+                category={category}
+                setCategory={setCategory}
+              />
+              <Button
+                type="button"
+                variant={scanning ? "destructive" : "secondary"}
+                onClick={() => setScanning(!scanning)}
+                className="gap-2"
+                disabled={loading}
+              >
+                <Camera size={16} />
+                {scanning ? "Cerrar cámara" : "Escanear"}
+              </Button>
+            </div>
+
+            <div className="mt-4 flex justify-between">
+              <Button type="submit" className="gap-1" disabled={loading}>
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <Loader size={16} className="w-4 h-4 animate-spin" />
+                    Buscando...
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    <Search size={16} className="w-4 h-4" />
+                    Buscar
+                  </span>
+                )}
+              </Button>
+            </div>
+          </form>
+
+          <div className="mt-4 flex">
             <FormTrigger
               aria-disabled={loading}
               icon={<Plus />}
@@ -123,8 +130,8 @@ export default function ScanPage() {
               description="Añade nuevos productos a tu almacén"
               form={<NewProductForm />}
             />
-          </footer>
-        </form>
+          </div>
+        </div>
       </div>
 
       {scanning && <Scanner onDetected={handleScan} />}
