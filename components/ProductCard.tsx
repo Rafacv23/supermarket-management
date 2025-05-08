@@ -27,7 +27,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Card>
       <CardHeader>
-        <Badge variant="outline">{product.category}</Badge>
+        <Badge>{product.category}</Badge>
         <CardTitle>{product.name}</CardTitle>
         <CardDescription className="flex items-center gap-2">
           <Barcode size={16} /> {product.barcode}

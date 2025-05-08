@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/select"
 import { Category } from "@prisma/client"
 
-interface SearchFiltersProps {
+interface SearchFiltersProps extends React.ComponentPropsWithoutRef<"form"> {
   category: Category | undefined
   setCategory: (category: Category) => void
 }

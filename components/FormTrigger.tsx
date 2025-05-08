@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/drawer"
 import { buttonVariants } from "@/components/ui/button"
 
-interface Props {
+interface Props extends React.ComponentPropsWithoutRef<"form"> {
   icon: React.ReactNode
   title: string
   description: string
@@ -21,7 +21,7 @@ export default function FormTrigger({ icon, title, description, form }: Props) {
       <DrawerTrigger className={buttonVariants({ variant: "default" })}>
         {icon} {title}
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="min-h-2/3 px-2">
         <DrawerHeader>
           <DrawerTitle>{title}</DrawerTitle>
           <DrawerDescription>{description}</DrawerDescription>
