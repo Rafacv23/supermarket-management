@@ -109,6 +109,7 @@ export default function ReceiveProductForm({ barcode }: Props) {
                       type="text"
                       placeholder="Código de barras"
                       {...field}
+                      disabled={loading}
                     />
                   </FormControl>
                   <Button
@@ -116,6 +117,7 @@ export default function ReceiveProductForm({ barcode }: Props) {
                     variant={scanning ? "destructive" : "default"}
                     onClick={() => setScanning(!scanning)}
                     className="gap-1"
+                    disabled={loading}
                   >
                     <Camera className="w-4 h-4" />
                     {scanning ? "Cerrar cámara" : "Escanear"}
@@ -127,7 +129,7 @@ export default function ReceiveProductForm({ barcode }: Props) {
           />
 
           {scanning && (
-            <div className="mt-4">
+            <div className="mt-4" aria-disabled={loading}>
               <BarcodeScanner
                 width={400}
                 height={400}
@@ -146,6 +148,7 @@ export default function ReceiveProductForm({ barcode }: Props) {
                 <FormLabel>Cantidad</FormLabel>
                 <FormControl>
                   <Input
+                    disabled={loading}
                     type="number"
                     min={0}
                     placeholder="Cantidad recibida"
@@ -158,11 +161,11 @@ export default function ReceiveProductForm({ barcode }: Props) {
           />
 
           <footer className="flex gap-4 pt-4 justify-end">
-            <Button type="reset" variant="outline">
+            <Button type="reset" variant="outline" disabled={loading}>
               <Trash />
               Borrar
             </Button>
-            <Button type="submit">
+            <Button type="submit" disabled={loading}>
               <Save className="w-4 h-4 mr-2" />
               Añadir
             </Button>
@@ -189,6 +192,7 @@ export default function ReceiveProductForm({ barcode }: Props) {
                 <Button
                   size="sm"
                   variant="outline"
+                  disabled={loading}
                   onClick={() => removeProduct(product.barcode)}
                 >
                   <Trash className="w-4 h-4" />
@@ -198,7 +202,7 @@ export default function ReceiveProductForm({ barcode }: Props) {
           </ul>
 
           <div className="flex gap-4 justify-end">
-            <Button variant="outline" onClick={clearOrder}>
+            <Button variant="outline" onClick={clearOrder} disabled={loading}>
               <Trash className="w-4 h-4 mr-1" />
               Vaciar lista
             </Button>

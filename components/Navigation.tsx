@@ -4,9 +4,12 @@ import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { Barcode, ClipboardList, House, PackageCheck } from "lucide-react"
 import { buttonVariants } from "@/components/ui/button"
+import { motion } from "framer-motion"
 
 export default function Navigation() {
   const pathname = usePathname()
+
+  if (pathname === "/login") return null
 
   const isCurrentPath = (path: string) => pathname === path
 
@@ -23,14 +26,22 @@ export default function Navigation() {
         title="Inicio"
       >
         {isCurrentPath("/") ? (
-          <span className="flex items-center gap-2">
+          <motion.span
+            key="inicio"
+            layoutId="active-nav"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.2 }}
+            className="flex items-center gap-2"
+          >
             <House size={20} />
             Inicio
-          </span>
+          </motion.span>
         ) : (
           <House size={20} />
         )}
       </Link>
+
       <Link
         className={buttonVariants({
           variant: isCurrentPath("/scan") ? "default" : "secondary",
@@ -39,14 +50,22 @@ export default function Navigation() {
         title="Escanear producto"
       >
         {isCurrentPath("/scan") ? (
-          <span className="flex items-center gap-2">
+          <motion.span
+            key="scan"
+            layoutId="active-nav"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.2 }}
+            className="flex items-center gap-2"
+          >
             <Barcode size={20} />
             Escanear
-          </span>
+          </motion.span>
         ) : (
           <Barcode size={20} />
         )}
       </Link>
+
       <Link
         className={buttonVariants({
           variant: isCurrentPath("/receive") ? "default" : "secondary",
@@ -55,14 +74,22 @@ export default function Navigation() {
         title="Recepción de pedidos"
       >
         {isCurrentPath("/receive") ? (
-          <span className="flex items-center gap-2">
+          <motion.span
+            key="receive"
+            layoutId="active-nav"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.2 }}
+            className="flex items-center gap-2"
+          >
             <PackageCheck size={20} />
             Bajar
-          </span>
+          </motion.span>
         ) : (
           <PackageCheck size={20} />
         )}
       </Link>
+
       <Link
         className={buttonVariants({
           variant: isCurrentPath("/upload") ? "default" : "secondary",
@@ -71,10 +98,17 @@ export default function Navigation() {
         title="Subir mercancía"
       >
         {isCurrentPath("/upload") ? (
-          <span className="flex items-center gap-2">
+          <motion.span
+            key="upload"
+            layoutId="active-nav"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.2 }}
+            className="flex items-center gap-2"
+          >
             <ClipboardList size={20} />
             Subir
-          </span>
+          </motion.span>
         ) : (
           <ClipboardList size={20} />
         )}

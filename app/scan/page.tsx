@@ -88,11 +88,6 @@ export default function ScanPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Nombre o código de barras"
               />
-              <SearchFilters
-                aria-disabled={loading}
-                category={category}
-                setCategory={setCategory}
-              />
               <Button
                 type="button"
                 variant={scanning ? "destructive" : "secondary"}
@@ -103,9 +98,6 @@ export default function ScanPage() {
                 <Camera size={16} />
                 {scanning ? "Cerrar cámara" : "Escanear"}
               </Button>
-            </div>
-
-            <div className="mt-4 flex justify-between">
               <Button type="submit" className="gap-1" disabled={loading}>
                 {loading ? (
                   <span className="flex items-center gap-2">
@@ -121,8 +113,13 @@ export default function ScanPage() {
               </Button>
             </div>
           </form>
+          <div className="mt-4 flex justify-between">
+            <SearchFilters
+              aria-disabled={loading}
+              category={category}
+              setCategory={setCategory}
+            />
 
-          <div className="mt-4 flex">
             <FormTrigger
               aria-disabled={loading}
               icon={<Plus />}

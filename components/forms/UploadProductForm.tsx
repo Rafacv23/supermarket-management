@@ -102,6 +102,7 @@ export default function UploadProductForm({ barcode }: Props) {
                   <FormControl>
                     <Input
                       type="text"
+                      disabled={loading}
                       placeholder="Código de barras"
                       {...field}
                     />
@@ -110,6 +111,7 @@ export default function UploadProductForm({ barcode }: Props) {
                     type="button"
                     variant={scanning ? "destructive" : "default"}
                     onClick={() => setScanning(!scanning)}
+                    disabled={loading}
                     className="gap-1"
                   >
                     <Camera className="w-4 h-4" />
@@ -122,7 +124,7 @@ export default function UploadProductForm({ barcode }: Props) {
           />
 
           {scanning && (
-            <div className="mt-4">
+            <div className="mt-4" aria-disabled={loading}>
               <BarcodeScanner
                 width={400}
                 height={400}
@@ -141,6 +143,7 @@ export default function UploadProductForm({ barcode }: Props) {
                 <FormLabel>Cantidad</FormLabel>
                 <FormControl>
                   <Input
+                    disabled={loading}
                     type="number"
                     placeholder="Cantidad a subir"
                     min={1}
@@ -153,11 +156,11 @@ export default function UploadProductForm({ barcode }: Props) {
           />
 
           <footer className="flex gap-4 pt-4 justify-end">
-            <Button type="reset" variant="outline">
+            <Button type="reset" variant="outline" disabled={loading}>
               <Trash />
               Borrar
             </Button>
-            <Button type="submit">
+            <Button type="submit" disabled={loading}>
               <Save className="w-4 h-4 mr-2" />
               Añadir
             </Button>
@@ -184,6 +187,7 @@ export default function UploadProductForm({ barcode }: Props) {
                   size="sm"
                   variant="outline"
                   onClick={() => removeProduct(product.barcode)}
+                  disabled={loading}
                 >
                   <Trash className="w-4 h-4" />
                 </Button>
@@ -192,7 +196,7 @@ export default function UploadProductForm({ barcode }: Props) {
           </ul>
 
           <div className="flex gap-4 justify-end">
-            <Button variant="outline" onClick={clearOrder}>
+            <Button variant="outline" onClick={clearOrder} disabled={loading}>
               <Trash className="w-4 h-4 mr-1" />
               Vaciar lista
             </Button>
