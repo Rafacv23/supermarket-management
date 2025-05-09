@@ -5,6 +5,7 @@ import Navigation from "@/components/Navigation"
 import { Toaster } from "@/components/ui/sonner"
 import ClientFetchProvider from "@/components/ClientFetchProvider"
 import { Suspense } from "react"
+import GoingUpBtn from "@/components/GoingUpBtn"
 
 const jetBrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
@@ -28,6 +29,7 @@ export default function RootLayout({
         <ClientFetchProvider>
           {children}
           <Navigation />
+          <GoingUpBtn />
           <Suspense>
             <Toaster closeButton richColors position="top-center" />
           </Suspense>

@@ -3,8 +3,7 @@
 import Container from "@/components/Container"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Camera, Search, Plus, Loader, Barcode } from "lucide-react"
-import NewProductForm from "@/components/forms/NewProductForm"
+import { Camera, Search, Loader, Barcode } from "lucide-react"
 import Loading from "@/components/Loading"
 import { Suspense, useEffect, useState } from "react"
 import { Category, Product } from "@prisma/client"
@@ -17,7 +16,6 @@ import ProductCard from "@/components/ProductCard"
 import SearchFilters from "@/components/SearchFilters"
 import { useScanner } from "@/hooks/useScanner"
 import Scanner from "@/components/Scanner"
-import FormTrigger from "@/components/FormTrigger"
 
 export default function ScanPage() {
   const [searchTerm, setSearchTerm] = useState<string>("")
@@ -123,14 +121,6 @@ export default function ScanPage() {
               category={category}
               setCategory={setCategory}
             />
-
-            <FormTrigger
-              aria-disabled={loading}
-              icon={<Plus />}
-              title="Añadir nuevo producto"
-              description="Añade nuevos productos a tu almacén"
-              form={<NewProductForm />}
-            />
           </div>
         </div>
       </div>
@@ -149,7 +139,7 @@ export default function ScanPage() {
         <Suspense fallback={<Loading />}>
           <div className="w-full">
             <h2 className="mb-4 font-bold">
-              Productos encontrados para: {searchTerm || scannedTerm}
+              Productos encontrados: {products.length}
             </h2>
             <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {products.map((product) => (

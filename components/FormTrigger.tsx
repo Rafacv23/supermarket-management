@@ -1,12 +1,14 @@
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import { buttonVariants } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
+import { X } from "lucide-react"
 
 interface Props extends React.ComponentPropsWithoutRef<"form"> {
   icon: React.ReactNode
@@ -21,9 +23,16 @@ export default function FormTrigger({ icon, title, description, form }: Props) {
       <DrawerTrigger className={buttonVariants({ variant: "default" })}>
         {icon} {title}
       </DrawerTrigger>
-      <DrawerContent className="min-h-3/4 px-2 mb-8">
+      <DrawerContent className="h-screen max-h-screen px-6 sm:rounded-t-xl">
         <DrawerHeader>
-          <DrawerTitle>{title}</DrawerTitle>
+          <div className="flex items-center justify-between">
+            <DrawerTitle>{title}</DrawerTitle>
+            <DrawerClose>
+              <Button variant="outline">
+                <X size={20} />
+              </Button>
+            </DrawerClose>
+          </div>
           <DrawerDescription>{description}</DrawerDescription>
         </DrawerHeader>
         {form}
