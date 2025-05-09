@@ -24,12 +24,10 @@ export default function ScanPage() {
   const [hasSearched, setHasSearched] = useState<boolean>(false)
   const [category, setCategory] = useState<Category | undefined>()
 
-  const {
-    scanning,
-    setScanning,
-    searchTerm: scannedTerm,
-    handleScan,
-  } = useScanner(products)
+  const { scanning, setScanning, handleScan } = useScanner(products, (term) => {
+    setSearchTerm(term)
+    setHasSearched(false)
+  })
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -88,13 +86,14 @@ export default function ScanPage() {
               <div className="flex gap-2">
                 <Input
                   type="search"
-                  value={searchTerm || scannedTerm}
+                  value={searchTerm}
                   disabled={loading}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Nombre o código de barras"
                   className="w-full"
                 />
                 <Button
+                  type="button"
                   variant="secondary"
                   onClick={() => setSearchTerm("")}
                   disabled={loading}
