@@ -3,7 +3,7 @@
 import Container from "@/components/Container"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Camera, Search, Loader, Barcode } from "lucide-react"
+import { Camera, Search, Loader, Barcode, X } from "lucide-react"
 import Loading from "@/components/Loading"
 import { Suspense, useEffect, useState } from "react"
 import { Category, Product } from "@prisma/client"
@@ -53,6 +53,8 @@ export default function ScanPage() {
       }
 
       setProducts(Array.isArray(products) ? products : [products])
+
+      setSearchTerm("")
     } catch (error) {
       console.error("Error al obtener los productos:", error)
     } finally {
@@ -78,28 +80,38 @@ export default function ScanPage() {
         <Barcode /> Escanear productos
       </h1>
       <p>Escanea o añade nuevos productos.</p>
-      <div>
+      <div className="w-full">
         <div className="mb-4">
           <form onSubmit={onSubmit}>
             <p className="mb-2">Buscar productos</p>
-            <div className="flex gap-2">
-              <Input
-                type="search"
-                value={searchTerm || scannedTerm}
-                disabled={loading}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Nombre o código de barras"
-              />
-              <Button
-                type="button"
-                variant={scanning ? "destructive" : "secondary"}
-                onClick={() => setScanning(!scanning)}
-                className="gap-2"
-                disabled={loading}
-              >
-                <Camera size={16} />
-                {scanning ? "Cerrar cámara" : "Escanear"}
-              </Button>
+            <div className="flex flex-col gap-4">
+              <div className="flex gap-2">
+                <Input
+                  type="search"
+                  value={searchTerm || scannedTerm}
+                  disabled={loading}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Nombre o código de barras"
+                  className="w-full"
+                />
+                <Button
+                  variant="secondary"
+                  onClick={() => setSearchTerm("")}
+                  disabled={loading}
+                >
+                  <X size={16} />
+                </Button>
+                <Button
+                  type="button"
+                  variant={scanning ? "destructive" : "secondary"}
+                  onClick={() => setScanning(!scanning)}
+                  className="gap-2"
+                  disabled={loading}
+                >
+                  <Camera size={16} />
+                  {scanning ? "Cerrar cámara" : "Escanear"}
+                </Button>
+              </div>
               <Button type="submit" className="gap-1" disabled={loading}>
                 {loading ? (
                   <span className="flex items-center gap-2">
