@@ -2,25 +2,9 @@
 
 import { usePathname } from "next/navigation"
 import Link from "next/link"
-import {
-  Barcode,
-  ClipboardList,
-  House,
-  PackageCheck,
-  Plus,
-  X,
-} from "lucide-react"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { Barcode, ClipboardList, House, PackageCheck, Plus } from "lucide-react"
+import { buttonVariants } from "@/components/ui/button"
 import { motion } from "framer-motion"
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer"
 import FormTrigger from "./FormTrigger"
 import NewProductForm from "./forms/NewProductForm"
 
@@ -84,36 +68,11 @@ export default function Navigation() {
         )}
       </Link>
 
-      <Drawer>
-        <DrawerTrigger asChild>
-          <Button>
-            <Plus size={20} />
-          </Button>
-        </DrawerTrigger>
-        <DrawerContent className="h-screen max-h-screen px-6 sm:rounded-t-xl">
-          <DrawerHeader>
-            <div className="flex items-center justify-between">
-              <DrawerTitle>¿Qué quieres hacer?</DrawerTitle>
-              <DrawerClose>
-                <Button variant="outline">
-                  <X size={20} />
-                </Button>
-              </DrawerClose>
-            </div>
-            <DrawerDescription>Selecciona una opción.</DrawerDescription>
-          </DrawerHeader>
-          <ul className="grid grid-cols-1 gap-4 p-4">
-            <FormTrigger
-              title="Nuevo producto"
-              icon={<Barcode />}
-              description="Enviar pedido de mercancía"
-              form={<NewProductForm />}
-            />
-            <Button>Subir mercancia</Button>
-            <Button>Bajar mercancia</Button>
-          </ul>
-        </DrawerContent>
-      </Drawer>
+      <FormTrigger
+        icon={<Plus size={20} />}
+        description="Enviar pedido de mercancía"
+        form={<NewProductForm />}
+      />
 
       <Link
         className={buttonVariants({

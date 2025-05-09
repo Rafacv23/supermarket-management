@@ -12,7 +12,7 @@ import { X } from "lucide-react"
 
 interface Props extends React.ComponentPropsWithoutRef<"form"> {
   icon: React.ReactNode
-  title: string
+  title?: string
   description: string
   form: React.ReactNode
 }
@@ -26,7 +26,7 @@ export default function FormTrigger({ icon, title, description, form }: Props) {
       <DrawerContent className="h-screen max-h-screen px-6 sm:rounded-t-xl">
         <DrawerHeader>
           <div className="flex items-center justify-between">
-            <DrawerTitle>{title}</DrawerTitle>
+            <DrawerTitle>{title || "Nuevo producto"}</DrawerTitle>
             <DrawerClose>
               <Button variant="outline">
                 <X size={20} />
