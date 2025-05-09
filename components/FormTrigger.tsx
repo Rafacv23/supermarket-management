@@ -39,7 +39,7 @@ export default function FormTrigger({ icon, title, description, form }: Props) {
           </div>
           <DrawerDescription>{description}</DrawerDescription>
         </DrawerHeader>
-        {form}
+        <div className="overflow-y-auto">{form}</div>
       </DrawerContent>
     </Drawer>
   )

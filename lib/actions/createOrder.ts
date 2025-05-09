@@ -37,7 +37,7 @@ export default async function uploadProductAndCreateOrder({
           console.warn(
             `Stock insuficiente para ${product.barcode}: Disponible ${existingProduct.stock}, Intentado: ${product.stock}`
           )
-          return
+          throw new Error("Stock insuficiente")
         }
 
         // Actualizar stock
