@@ -7,7 +7,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import { X } from "lucide-react"
 
 interface Props extends React.ComponentPropsWithoutRef<"form"> {
@@ -19,7 +19,7 @@ interface Props extends React.ComponentPropsWithoutRef<"form"> {
 
 export default function FormTrigger({ icon, title, description, form }: Props) {
   return (
-    <Drawer repositionInputs>
+    <Drawer>
       <DrawerTrigger
         className={buttonVariants({
           variant: title ? "default" : "secondary",
@@ -27,19 +27,17 @@ export default function FormTrigger({ icon, title, description, form }: Props) {
       >
         {icon} {title}
       </DrawerTrigger>
-      <DrawerContent className="h-screen max-h-screen px-6 sm:rounded-t-xl">
+      <DrawerContent className="h-[85dvh] px-6 sm:rounded-t-xl">
         <DrawerHeader>
           <div className="flex items-center justify-between">
             <DrawerTitle>{title || "Nuevo producto"}</DrawerTitle>
-            <DrawerClose>
-              <Button variant="outline">
-                <X size={20} />
-              </Button>
+            <DrawerClose className={buttonVariants({ variant: "secondary" })}>
+              <X size={20} />
             </DrawerClose>
           </div>
           <DrawerDescription>{description}</DrawerDescription>
         </DrawerHeader>
-        <div className="overflow-y-auto">{form}</div>
+        <div className="overflow-y-auto max-h-[calc(100dvh-140px)]">{form}</div>
       </DrawerContent>
     </Drawer>
   )
