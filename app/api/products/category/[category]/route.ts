@@ -4,18 +4,18 @@ import { Category } from "@prisma/client"
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { category: Category } }
+  { params }: { params: { category: string } }
 ) {
-  const { category } = params
-  const { searchParams } = req.nextUrl
+  const rawCategory = params.category
+  const category = rawCategory.toUpperCase() as Category // or validate safely
 
+  const { searchParams } = req.nextUrl
   const page = Number(searchParams.get("page")) || 1
   const limit = Number(searchParams.get("limit")) || 10
-
   const skip = Math.max((page - 1) * limit, 0)
 
-  if (!category) {
-    return new Response("Category is required", { status: 400 })
+  if (!Object.values(Category).includes(category)) {
+    return new Response("Invalid category", { status: 400 })
   }
 
   const products = await prisma.product.findMany({
@@ -29,7 +29,7 @@ export async function GET(
     status: 200,
     headers: {
       "Content-Type": "application/json",
-      "Cache-Control": "public, max-age=1200, stale-while-revalidate=120", // caché
+      "Cache-Control": "public, max-age=1200, stale-while-revalidate=120",
     },
   })
 }
