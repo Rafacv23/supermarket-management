@@ -4,10 +4,9 @@ import { Category } from "@prisma/client"
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { category: string } }
+  { params }: { params: Promise<{ category: Category }> }
 ) {
-  const rawCategory = params.category
-  const category = rawCategory.toUpperCase() as Category // or validate safely
+  const { category } = await params
 
   const { searchParams } = req.nextUrl
   const page = Number(searchParams.get("page")) || 1

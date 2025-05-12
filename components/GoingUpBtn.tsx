@@ -22,6 +22,7 @@ export default function GoingUpBtn() {
 
   return (
     <Button
+      aria-label="Volver al inicio"
       onClick={handleClick}
       className={`fixed bottom-25 right-4 z-50 transition-opacity ${
         isVisible ? "opacity-100" : "opacity-0 pointer-events-none"

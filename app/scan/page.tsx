@@ -101,6 +101,7 @@ export default function ScanPage() {
                   variant="secondary"
                   onClick={() => setSearchTerm("")}
                   disabled={loading}
+                  aria-label="Borrar"
                 >
                   <X size={16} />
                 </Button>

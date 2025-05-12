@@ -21,6 +21,7 @@ export default function FormTrigger({ icon, title, description, form }: Props) {
   return (
     <Drawer>
       <DrawerTrigger
+        aria-label="Nuevo producto"
         className={buttonVariants({
           variant: title ? "default" : "secondary",
         })}
@@ -31,7 +32,10 @@ export default function FormTrigger({ icon, title, description, form }: Props) {
         <DrawerHeader>
           <div className="flex items-center justify-between">
             <DrawerTitle>{title || "Nuevo producto"}</DrawerTitle>
-            <DrawerClose className={buttonVariants({ variant: "secondary" })}>
+            <DrawerClose
+              aria-label="Cerrar"
+              className={buttonVariants({ variant: "secondary" })}
+            >
               <X size={20} />
             </DrawerClose>
           </div>

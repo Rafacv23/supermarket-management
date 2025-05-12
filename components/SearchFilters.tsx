@@ -23,7 +23,7 @@ export default function SearchFilters({
           value={category}
           onValueChange={(value) => setCategory(value as Category)}
         >
-          <SelectTrigger>
+          <SelectTrigger aria-label="Elegir categoría">
             <SelectValue placeholder="Categoría" />
           </SelectTrigger>
           <SelectContent>
