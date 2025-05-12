@@ -1,15 +1,9 @@
 import type { Metadata } from "next"
-import { JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import Navigation from "@/components/Navigation"
 import { Toaster } from "@/components/ui/sonner"
 import ClientFetchProvider from "@/components/ClientFetchProvider"
 import { Suspense } from "react"
-
-const jetBrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
-  subsets: ["latin"],
-})
 
 export const metadata: Metadata = {
   title: "Alcampo Bustarviejo",
@@ -24,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`dark ${jetBrainsMono.variable} antialiased`}>
+      <body className={`antialiased`}>
         <ClientFetchProvider>
           {children}
           <Navigation />
