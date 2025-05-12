@@ -58,7 +58,7 @@ export default function UploadPage() {
       </h1>
       <p>Sube los productos desde el almacen.</p>
       <FormTrigger
-        title="Subir"
+        title="Subir productos"
         icon={<ClipboardList size={16} />}
         form={<UploadProductForm />}
         description="Añade todos los productos que vayas a subir desde el almacen."

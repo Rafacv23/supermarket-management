@@ -2,9 +2,11 @@
 
 import { usePathname } from "next/navigation"
 import Link from "next/link"
-import { Barcode, ClipboardList, House, PackageCheck } from "lucide-react"
+import { Barcode, ClipboardList, House, PackageCheck, Plus } from "lucide-react"
 import { buttonVariants } from "@/components/ui/button"
 import { motion } from "framer-motion"
+import FormTrigger from "./FormTrigger"
+import NewProductForm from "./forms/NewProductForm"
 
 export default function Navigation() {
   const pathname = usePathname()
@@ -65,6 +67,12 @@ export default function Navigation() {
           <Barcode size={20} />
         )}
       </Link>
+
+      <FormTrigger
+        icon={<Plus size={20} />}
+        description="Enviar pedido de mercancía"
+        form={<NewProductForm />}
+      />
 
       <Link
         className={buttonVariants({

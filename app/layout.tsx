@@ -4,6 +4,7 @@ import Navigation from "@/components/Navigation"
 import { Toaster } from "@/components/ui/sonner"
 import ClientFetchProvider from "@/components/ClientFetchProvider"
 import { Suspense } from "react"
+import GoingUpBtn from "@/components/GoingUpBtn"
 
 export const metadata: Metadata = {
   title: "Alcampo Bustarviejo",
@@ -22,6 +23,7 @@ export default function RootLayout({
         <ClientFetchProvider>
           {children}
           <Navigation />
+          <GoingUpBtn />
           <Suspense>
             <Toaster closeButton richColors position="top-center" />
           </Suspense>
