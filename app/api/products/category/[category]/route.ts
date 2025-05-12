@@ -3,10 +3,16 @@ import { prisma } from "@/lib/prisma"
 import { Category } from "@prisma/client"
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ category: Category }> }
+  req: NextRequest,
+  { params }: { params: { category: Category } }
 ) {
-  const { category } = await params
+  const { category } = params
+  const { searchParams } = req.nextUrl
+
+  const page = Number(searchParams.get("page")) || 1
+  const limit = Number(searchParams.get("limit")) || 10
+
+  const skip = Math.max((page - 1) * limit, 0)
 
   if (!category) {
     return new Response("Category is required", { status: 400 })
@@ -14,17 +20,16 @@ export async function GET(
 
   const products = await prisma.product.findMany({
     where: { category },
+    skip,
+    take: limit,
+    orderBy: { createdAt: "desc" },
   })
-
-  if (!products) {
-    return new Response("Products not found for this category", { status: 404 })
-  }
 
   return new Response(JSON.stringify(products), {
     status: 200,
     headers: {
       "Content-Type": "application/json",
-      "Cache-Control": "3600",
+      "Cache-Control": "public, max-age=1200, stale-while-revalidate=120", // caché
     },
   })
 }

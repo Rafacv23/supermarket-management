@@ -1,5 +1,5 @@
 import { Category, Product } from "@prisma/client"
-import { useQuery } from "@tanstack/react-query"
+import { useInfiniteQuery } from "@tanstack/react-query"
 
 export async function getProductByBarcode(barcode: string): Promise<Product> {
   try {
@@ -32,13 +32,18 @@ export async function getProductsByQuery(query: string): Promise<Product[]> {
 }
 
 export function useProductsByCategory(category: Category | undefined) {
-  return useQuery<Product[]>({
+  return useInfiniteQuery<Product[]>({
     queryKey: ["products", category],
-    queryFn: async () => {
-      const res = await fetch(`/api/products/category/${category}`)
+    queryFn: async ({ pageParam = 1 }) => {
+      const res = await fetch(
+        `/api/products/category/${category}?page=${pageParam}&limit=10`
+      )
       if (!res.ok) throw new Error("Failed to fetch products")
       return res.json()
     },
-    enabled: !!category, // don't run until category is defined
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.length < 10 ? undefined : allPages.length + 1,
+    enabled: !!category,
+    initialPageParam: 1,
   })
 }

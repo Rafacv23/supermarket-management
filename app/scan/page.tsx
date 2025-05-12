@@ -66,11 +66,15 @@ export default function ScanPage() {
     data: categoryProducts,
     isLoading,
     isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
   } = useProductsByCategory(category)
 
   useEffect(() => {
     if (categoryProducts) {
-      setProducts(categoryProducts)
+      const flattenedProducts = categoryProducts.pages.flat()
+      setProducts(flattenedProducts)
     }
   }, [categoryProducts])
 
@@ -145,7 +149,39 @@ export default function ScanPage() {
         </div>
       )}
 
-      {products.length > 0 ? (
+      {category ? (
+        <Suspense fallback={<Loading />}>
+          <div className="w-full">
+            <h2 className="mb-4 font-bold">
+              Productos encontrados para: {category}
+            </h2>
+            {categoryProducts?.pages.map((group, i) => (
+              <ul
+                key={i}
+                className={`grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 ${
+                  i > 0 ? "mt-4" : ""
+                }`}
+              >
+                {group.map((product) => (
+                  <li key={product.id}>
+                    <ProductCard product={product} />
+                  </li>
+                ))}
+              </ul>
+            ))}
+            {hasNextPage && (
+              <div className="flex justify-center mt-4">
+                <Button
+                  onClick={() => fetchNextPage()}
+                  disabled={isFetchingNextPage}
+                >
+                  {isFetchingNextPage ? "Cargando más..." : "Cargar más"}
+                </Button>
+              </div>
+            )}
+          </div>
+        </Suspense>
+      ) : products.length > 0 ? (
         <Suspense fallback={<Loading />}>
           <div className="w-full">
             <h2 className="mb-4 font-bold">
