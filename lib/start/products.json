@@ -4,6 +4,8 @@
     "barcode": "1234567890123",
     "price": 1.15,
     "stock": 100,
+    "quantity": "100ml",
+    "brand": "Coca Cola",
     "category": "Lacteo"
   }
 ]
