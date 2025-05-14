@@ -1,0 +1,9 @@
+[
+  {
+    "name": "Leche Entera",
+    "barcode": "1234567890123",
+    "price": 1.15,
+    "stock": 100,
+    "category": "Lacteo"
+  }
+]
