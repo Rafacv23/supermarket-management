@@ -3,7 +3,7 @@
     "name": "Leche Entera",
     "barcode": "1234567890123",
     "price": 1.15,
-    "stock": 100,
+    "stock": 10,
     "quantity": "100ml",
     "brand": "Coca Cola",
     "category": "Lacteo"
