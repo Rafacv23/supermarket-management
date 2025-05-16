@@ -40,6 +40,9 @@ enum Category {
   Harina
   Champu
   Detergente
+  Salsa
+  Compresa
+  Preparado
 }
 
 model User {
