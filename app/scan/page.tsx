@@ -102,6 +102,7 @@ export default function ScanPage() {
                   onClick={() => setSearchTerm("")}
                   disabled={loading}
                   aria-label="Borrar"
+                  className={searchTerm ? "" : "invisible"}
                 >
                   <X size={16} />
                 </Button>
@@ -111,6 +112,7 @@ export default function ScanPage() {
                   onClick={() => setScanning(!scanning)}
                   className="gap-2"
                   disabled={loading}
+                  aria-label="Escanear"
                 >
                   <Camera size={16} />
                   {scanning ? "Cerrar cámara" : "Escanear"}
