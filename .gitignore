@@ -45,3 +45,4 @@ lib/start/products.json
 lib/start/seed.json
 lib/start/seed.csv
 
+/app/generated

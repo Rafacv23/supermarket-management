@@ -1,7 +1,7 @@
 // returns all the pending orders from the database
 
-import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
+import { NextResponse } from "next/server"
 
 export const revalidate = 3600
 

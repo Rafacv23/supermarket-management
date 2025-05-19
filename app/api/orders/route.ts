@@ -1,8 +1,8 @@
 //returns all the orders from the database
 // returns all the pending orders from the database
 
-import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
+import { NextResponse } from "next/server"
 
 export async function GET() {
   try {
