@@ -42,3 +42,6 @@ next-env.d.ts
 
 # database 
 lib/start/products.json
+lib/start/seed.json
+lib/start/seed.csv
+
