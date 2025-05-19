@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma"
+import { formatString } from "@/lib/utils"
 import { type NextRequest } from "next/server"
 
 export async function GET(request: NextRequest) {
@@ -9,20 +10,42 @@ export async function GET(request: NextRequest) {
     return new Response("Query is required", { status: 400 })
   }
 
+  const page = Number(searchParams.get("page")) || 1
+  const limit = Number(searchParams.get("limit")) || 25
+  const skip = Math.max((page - 1) * limit, 0)
+
   const products = await prisma.product.findMany({
-    where: { name: { contains: query } },
-    take: 10, // Limit the number of results to 10
+    where: {
+      OR: [
+        { name: { contains: query, mode: "insensitive" } },
+        { brand: { contains: query, mode: "insensitive" } },
+      ],
+    },
+    select: {
+      barcode: true,
+      name: true,
+      price: true,
+      category: true,
+      stock: true,
+    },
+    skip,
+    take: 25,
   })
 
   if (!products) {
     return new Response("Products not found", { status: 404 })
   }
 
-  return new Response(JSON.stringify(products), {
+  const formattedProducts = products.map((product) => ({
+    ...product,
+    name: formatString(product.name),
+  }))
+
+  return new Response(JSON.stringify(formattedProducts), {
     status: 200,
     headers: {
       "Content-Type": "application/json",
-      "Cache-Control": "3600",
+      "Cache-Control": "public, max-age=120, stale-while-revalidate=120",
     },
   })
 }

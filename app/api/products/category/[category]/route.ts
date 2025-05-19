@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { Category } from "@prisma/client"
+import { formatString } from "@/lib/utils"
 
 export async function GET(
   req: NextRequest,
@@ -19,12 +20,28 @@ export async function GET(
 
   const products = await prisma.product.findMany({
     where: { category },
+    select: {
+      barcode: true,
+      name: true,
+      price: true,
+      category: true,
+      stock: true,
+    },
     skip,
     take: limit,
     orderBy: { createdAt: "desc" },
   })
 
-  return new Response(JSON.stringify(products), {
+  if (!products) {
+    return new Response("Products not found", { status: 404 })
+  }
+
+  const formattedProducts = products.map((product) => ({
+    ...product,
+    name: formatString(product.name),
+  }))
+
+  return new Response(JSON.stringify(formattedProducts), {
     status: 200,
     headers: {
       "Content-Type": "application/json",

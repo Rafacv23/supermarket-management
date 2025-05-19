@@ -13,6 +13,13 @@ export async function GET(
 
   const product = await prisma.product.findUnique({
     where: { barcode },
+    select: {
+      barcode: true,
+      name: true,
+      price: true,
+      category: true,
+      stock: true,
+    },
   })
 
   if (!product) {
