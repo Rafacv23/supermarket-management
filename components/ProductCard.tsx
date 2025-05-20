@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card"
 import { Product } from "@prisma/client"
 import { Badge } from "@/components/ui/badge"
-import { Barcode, Boxes, ClipboardList, PackageCheck } from "lucide-react"
+import { ArrowDown, ArrowUp, Barcode, Boxes } from "lucide-react"
 import ReceiveProductForm from "@/components/forms/ReceiveProductForm"
 import UploadProductForm from "@/components/forms/UploadProductForm"
 import FormTrigger from "./FormTrigger"
@@ -41,13 +41,13 @@ export default function ProductCard({ product }: ProductCardProps) {
       </CardContent>
       <CardFooter className="flex justify-end gap-2">
         <FormTrigger
-          icon={<PackageCheck size={16} />}
-          title="Recibir"
+          icon={<ArrowDown size={16} />}
+          title="Bajar"
           description="Añade todos los productos que hayas recibido"
           form={<ReceiveProductForm barcode={product.barcode} />}
         />
         <FormTrigger
-          icon={<ClipboardList size={16} />}
+          icon={<ArrowUp size={16} />}
           title="Subir"
           description="Añade todos los productos que vayas a subir desde el almacen"
           form={<UploadProductForm barcode={product.barcode} />}
