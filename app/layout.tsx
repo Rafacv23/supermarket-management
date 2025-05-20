@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "Alcampo Bustarviejo",
   description: "Gestiona tus productos y maneja tus pedidos.",
   manifest: "/manifest.json",
+  colorScheme: "light",
 }
 
 export default function RootLayout({

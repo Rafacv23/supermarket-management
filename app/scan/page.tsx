@@ -1,20 +1,17 @@
 "use client"
 
 import Container from "@/components/Container"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Camera, Search, Loader, Barcode, X, Plus } from "lucide-react"
+import { Barcode } from "lucide-react"
 import Loading from "@/components/Loading"
-import { Suspense, useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Category, Product } from "@prisma/client"
 import { searchProducts, useProductsByCategory } from "@/lib/queries/products"
-import ProductCard from "@/components/ProductCard"
 import SearchFilters from "@/components/SearchFilters"
 import { useScanner } from "@/hooks/useScanner"
 const Scanner = dynamic(() => import("@/components/Scanner"), { ssr: false })
-import FormTrigger from "@/components/FormTrigger"
-import NewProductForm from "@/components/forms/NewProductForm"
 import dynamic from "next/dynamic"
+import SearchProductForm from "@/components/forms/SearchProductForm"
+import SearchedProductsList from "@/components/SearchedProductsList"
 
 export default function ScanPage() {
   const [searchTerm, setSearchTerm] = useState<string>("")
@@ -80,55 +77,14 @@ export default function ScanPage() {
       <p>Escanea o añade nuevos productos.</p>
       <div className="w-full">
         <div className="mb-4">
-          <form onSubmit={onSubmit}>
-            <p className="mb-2">Buscar productos</p>
-            <div className="flex flex-col gap-4">
-              <div className="flex gap-2">
-                <Input
-                  type="search"
-                  value={searchTerm}
-                  disabled={loading}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Nombre o código de barras"
-                  className="w-full"
-                />
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={() => setSearchTerm("")}
-                  disabled={loading}
-                  aria-label="Borrar"
-                  className={searchTerm ? "" : "invisible"}
-                >
-                  <X size={16} />
-                </Button>
-                <Button
-                  type="button"
-                  variant={scanning ? "destructive" : "secondary"}
-                  onClick={() => setScanning(!scanning)}
-                  className="gap-2"
-                  disabled={loading}
-                  aria-label="Escanear"
-                >
-                  <Camera size={16} />
-                  {scanning ? "Cerrar cámara" : "Escanear"}
-                </Button>
-              </div>
-              <Button type="submit" className="gap-1" disabled={loading}>
-                {loading ? (
-                  <span className="flex items-center gap-2">
-                    <Loader size={16} className="w-4 h-4 animate-spin" />
-                    Buscando...
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-2">
-                    <Search size={16} className="w-4 h-4" />
-                    Buscar
-                  </span>
-                )}
-              </Button>
-            </div>
-          </form>
+          <SearchProductForm
+            onSubmit={onSubmit}
+            searchTerm={searchTerm}
+            loading={loading}
+            scanning={scanning}
+            setScanning={setScanning}
+            setSearchTerm={setSearchTerm}
+          />
           <div className="mt-4 flex justify-between">
             <SearchFilters
               aria-disabled={loading}
@@ -149,69 +105,16 @@ export default function ScanPage() {
         </div>
       )}
 
-      {category ? (
-        <Suspense fallback={<Loading />}>
-          <div className="w-full">
-            <h2 className="mb-4 font-bold">
-              Productos encontrados para: {category}
-            </h2>
-            {categoryProducts?.pages.map((group, i) => (
-              <ul
-                key={i}
-                className={`grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 ${
-                  i > 0 ? "mt-4" : ""
-                }`}
-              >
-                {group.map((product) => (
-                  <li key={product.id}>
-                    <ProductCard product={product} />
-                  </li>
-                ))}
-              </ul>
-            ))}
-            {hasNextPage && (
-              <div className="flex justify-center mt-4">
-                <Button
-                  onClick={() => fetchNextPage()}
-                  disabled={isFetchingNextPage}
-                >
-                  {isFetchingNextPage ? "Cargando más..." : "Cargar más"}
-                </Button>
-              </div>
-            )}
-          </div>
-        </Suspense>
-      ) : products.length > 0 ? (
-        <Suspense fallback={<Loading />}>
-          <div className="w-full">
-            <h2 className="mb-4 font-bold">
-              Productos encontrados: {products.length}
-            </h2>
-            <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {products.map((product) => (
-                <li key={product.id}>
-                  <ProductCard product={product} />
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Suspense>
-      ) : (
-        hasSearched && (
-          <div>
-            <p>No se han encontrado productos para {searchTerm}</p>
-            <div className="flex flex-col items-center gap-2 mt-4">
-              <FormTrigger
-                aria-label="Nuevo producto"
-                icon={<Plus size={20} />}
-                description="Enviar pedido de mercancía"
-                form={<NewProductForm barcode={searchTerm} />}
-              />
-              <p>Añadir nuevo producto</p>
-            </div>
-          </div>
-        )
-      )}
+      <SearchedProductsList
+        category={category}
+        products={products}
+        hasSearched={hasSearched}
+        searchTerm={searchTerm}
+        categoryProducts={categoryProducts}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+        fetchNextPage={fetchNextPage}
+      />
     </Container>
   )
 }
