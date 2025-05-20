@@ -16,7 +16,7 @@ export async function getProductByBarcode(barcode: string): Promise<Product> {
   }
 }
 
-export async function getProductsByQuery(query: string): Promise<Product[]> {
+async function getProductsByQuery(query: string): Promise<Product[]> {
   try {
     const res = await fetch(`/api/products/search?q=${query}`)
     if (!res.ok) {
@@ -46,4 +46,20 @@ export function useProductsByCategory(category: Category | undefined) {
     enabled: !!category,
     initialPageParam: 1,
   })
+}
+
+import { BARCODE_REGEX } from "../definitions"
+
+export async function searchProducts(term: string): Promise<Product[]> {
+  const trimmedTerm = term.trim()
+  if (!trimmedTerm) {
+    throw new Error("El término de búsqueda está vacío.")
+  }
+
+  const isBarcode = BARCODE_REGEX.test(trimmedTerm)
+  const result = isBarcode
+    ? await getProductByBarcode(trimmedTerm)
+    : await getProductsByQuery(trimmedTerm.toLowerCase())
+
+  return Array.isArray(result) ? result : [result]
 }

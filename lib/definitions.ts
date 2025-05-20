@@ -31,3 +31,5 @@ export interface SessionPayload extends JWTPayload {
   userId: string
   expiresAt: Date
 }
+
+export const BARCODE_REGEX = /^[0-9]{12,13}$/

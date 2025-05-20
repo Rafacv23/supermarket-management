@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma"
+import { formatString } from "@/lib/utils"
 import { type NextRequest } from "next/server"
 
 export async function GET(
@@ -16,7 +17,7 @@ export async function GET(
     select: {
       barcode: true,
       name: true,
-      price: true,
+      brand: true,
       category: true,
       stock: true,
     },
@@ -26,7 +27,13 @@ export async function GET(
     return new Response("Product not found", { status: 404 })
   }
 
-  return new Response(JSON.stringify(product), {
+  const formattedProduct = {
+    ...product,
+    name: formatString(product.name),
+    brand: formatString(product.brand ?? ""),
+  }
+
+  return new Response(JSON.stringify(formattedProduct), {
     status: 200,
     headers: {
       "Content-Type": "application/json",

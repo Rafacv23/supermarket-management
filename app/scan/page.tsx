@@ -3,19 +3,18 @@
 import Container from "@/components/Container"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Camera, Search, Loader, Barcode, X } from "lucide-react"
+import { Camera, Search, Loader, Barcode, X, Plus } from "lucide-react"
 import Loading from "@/components/Loading"
-import { Suspense, useEffect, useState } from "react"
+import { Suspense, useCallback, useEffect, useState } from "react"
 import { Category, Product } from "@prisma/client"
-import {
-  getProductByBarcode,
-  getProductsByQuery,
-  useProductsByCategory,
-} from "@/lib/queries/products"
+import { searchProducts, useProductsByCategory } from "@/lib/queries/products"
 import ProductCard from "@/components/ProductCard"
 import SearchFilters from "@/components/SearchFilters"
 import { useScanner } from "@/hooks/useScanner"
-import Scanner from "@/components/Scanner"
+const Scanner = dynamic(() => import("@/components/Scanner"), { ssr: false })
+import FormTrigger from "@/components/FormTrigger"
+import NewProductForm from "@/components/forms/NewProductForm"
+import dynamic from "next/dynamic"
 
 export default function ScanPage() {
   const [searchTerm, setSearchTerm] = useState<string>("")
@@ -24,41 +23,37 @@ export default function ScanPage() {
   const [hasSearched, setHasSearched] = useState<boolean>(false)
   const [category, setCategory] = useState<Category | undefined>()
 
-  const { scanning, setScanning, handleScan } = useScanner(products, (term) => {
-    setSearchTerm(term)
-    setHasSearched(false)
-  })
+  const { scanning, setScanning, handleScan } = useScanner(
+    products,
+    async (term) => {
+      setSearchTerm(term)
+      setScanning(false)
+      await handleProductSearch(term)
+    }
+  )
 
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault()
+  const handleProductSearch = useCallback(async (term: string) => {
+    if (!term || term.trim().length < 1) {
+      console.error("Por favor, introduce un término de búsqueda válido.")
+      return
+    }
+
     setLoading(true)
     setHasSearched(true)
+
     try {
-      if (!searchTerm || searchTerm.length < 1) {
-        console.error("No se ha introducido un código de barras")
-        return
-      }
-
-      let products = []
-
-      const isBarcode = /^[0-9]{12,13}$/.test(searchTerm)
-      if (isBarcode) {
-        // Buscar por código de barras
-
-        products = [await getProductByBarcode(searchTerm)]
-      } else {
-        // Buscar por nombre o consulta general
-        products = await getProductsByQuery(searchTerm.toLowerCase())
-      }
-
-      setProducts(Array.isArray(products) ? products : [products])
-
-      setSearchTerm("")
-    } catch (error) {
-      console.error("Error al obtener los productos:", error)
+      const results = await searchProducts(term)
+      setProducts(results)
+    } catch (err) {
+      console.error("Error al obtener productos:", err)
     } finally {
       setLoading(false)
     }
+  }, [])
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    await handleProductSearch(searchTerm)
   }
 
   const {
@@ -202,7 +197,20 @@ export default function ScanPage() {
           </div>
         </Suspense>
       ) : (
-        hasSearched && <p>No se han encontrado productos</p>
+        hasSearched && (
+          <div>
+            <p>No se han encontrado productos para {searchTerm}</p>
+            <div className="flex flex-col items-center gap-2 mt-4">
+              <FormTrigger
+                aria-label="Nuevo producto"
+                icon={<Plus size={20} />}
+                description="Enviar pedido de mercancía"
+                form={<NewProductForm barcode={searchTerm} />}
+              />
+              <p>Añadir nuevo producto</p>
+            </div>
+          </div>
+        )
       )}
     </Container>
   )

@@ -23,7 +23,7 @@ export async function GET(
     select: {
       barcode: true,
       name: true,
-      price: true,
+      brand: true,
       category: true,
       stock: true,
     },
@@ -39,6 +39,7 @@ export async function GET(
   const formattedProducts = products.map((product) => ({
     ...product,
     name: formatString(product.name),
+    brand: formatString(product.brand ?? ""),
   }))
 
   return new Response(JSON.stringify(formattedProducts), {

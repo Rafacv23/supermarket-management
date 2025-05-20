@@ -2,9 +2,8 @@
 
 import { usePathname } from "next/navigation"
 import Link from "next/link"
-import { Barcode, ClipboardList, House, PackageCheck, Plus } from "lucide-react"
+import { ArrowDown, ArrowUp, Barcode, House, Plus } from "lucide-react"
 import { buttonVariants } from "@/components/ui/button"
-import { motion } from "framer-motion"
 import FormTrigger from "./FormTrigger"
 import NewProductForm from "./forms/NewProductForm"
 
@@ -27,21 +26,10 @@ export default function Navigation() {
         href="/"
         title="Inicio"
       >
-        {isCurrentPath("/") ? (
-          <motion.span
-            key="inicio"
-            layoutId="active-nav"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.2 }}
-            className="flex items-center gap-2"
-          >
-            <House size={20} />
-            Inicio
-          </motion.span>
-        ) : (
+        <span className="flex flex-col items-center">
           <House size={20} />
-        )}
+          Pedidos
+        </span>
       </Link>
 
       <Link
@@ -51,21 +39,10 @@ export default function Navigation() {
         href="/scan"
         title="Escanear producto"
       >
-        {isCurrentPath("/scan") ? (
-          <motion.span
-            key="scan"
-            layoutId="active-nav"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.2 }}
-            className="flex items-center gap-2"
-          >
-            <Barcode size={20} />
-            Escanear
-          </motion.span>
-        ) : (
+        <span className="flex flex-col items-center">
           <Barcode size={20} />
-        )}
+          Escaner
+        </span>
       </Link>
 
       <FormTrigger
@@ -82,21 +59,10 @@ export default function Navigation() {
         href="/receive"
         title="Recepción de pedidos"
       >
-        {isCurrentPath("/receive") ? (
-          <motion.span
-            key="receive"
-            layoutId="active-nav"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.2 }}
-            className="flex items-center gap-2"
-          >
-            <PackageCheck size={20} />
-            Bajar
-          </motion.span>
-        ) : (
-          <PackageCheck size={20} />
-        )}
+        <span className="flex flex-col items-center">
+          <ArrowDown size={20} />
+          Bajar
+        </span>
       </Link>
 
       <Link
@@ -106,21 +72,10 @@ export default function Navigation() {
         href="/upload"
         title="Subir mercancía"
       >
-        {isCurrentPath("/upload") ? (
-          <motion.span
-            key="upload"
-            layoutId="active-nav"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.2 }}
-            className="flex items-center gap-2"
-          >
-            <ClipboardList size={20} />
-            Subir
-          </motion.span>
-        ) : (
-          <ClipboardList size={20} />
-        )}
+        <span className="flex flex-col items-center">
+          <ArrowUp size={20} />
+          Subir
+        </span>
       </Link>
     </footer>
   )

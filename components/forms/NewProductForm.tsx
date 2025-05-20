@@ -56,7 +56,11 @@ const formSchema = z.object({
     .transform((val) => (typeof val === "number" ? val : undefined)),
 })
 
-export default function NewProductForm() {
+interface Props {
+  barcode?: string
+}
+
+export default function NewProductForm({ barcode }: Props) {
   const { scanning, setScanning, handleScan: baseHandleScan } = useScanner()
 
   function handleScan(barcode: string) {
@@ -72,7 +76,7 @@ export default function NewProductForm() {
     defaultValues: {
       name: "",
       category: undefined,
-      barcode: "",
+      barcode: barcode || "",
       price: undefined,
       stock: undefined,
     },

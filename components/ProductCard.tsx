@@ -8,13 +8,7 @@ import {
 } from "@/components/ui/card"
 import { Product } from "@prisma/client"
 import { Badge } from "@/components/ui/badge"
-import {
-  Banknote,
-  Barcode,
-  Boxes,
-  ClipboardList,
-  PackageCheck,
-} from "lucide-react"
+import { Barcode, Boxes, ClipboardList, PackageCheck } from "lucide-react"
 import ReceiveProductForm from "@/components/forms/ReceiveProductForm"
 import UploadProductForm from "@/components/forms/UploadProductForm"
 import FormTrigger from "./FormTrigger"
@@ -32,6 +26,9 @@ export default function ProductCard({ product }: ProductCardProps) {
         <CardDescription className="flex items-center gap-2">
           <Barcode size={16} /> {product.barcode}
         </CardDescription>
+        <CardDescription className="flex items-center gap-2">
+          {product.brand}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex gap-2"></div>
@@ -40,14 +37,6 @@ export default function ProductCard({ product }: ProductCardProps) {
             <Boxes size={16} /> Almacen
           </p>
           <p className="font-bold">{product.stock}uds</p>
-          {product.price && (
-            <>
-              <p className="text-sm text-muted-foreground flex items-center gap-2">
-                <Banknote size={16} /> Precio
-              </p>
-              <p className="font-bold">10{product.price}€</p>
-            </>
-          )}
         </div>
       </CardContent>
       <CardFooter className="flex justify-end gap-2">
