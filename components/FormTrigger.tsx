@@ -15,15 +15,28 @@ interface Props extends React.ComponentPropsWithoutRef<"form"> {
   title?: string
   description: string
   form: React.ReactNode
+  variant?:
+    | "default"
+    | "secondary"
+    | "destructive"
+    | "outline"
+    | "ghost"
+    | "link"
 }
 
-export default function FormTrigger({ icon, title, description, form }: Props) {
+export default function FormTrigger({
+  icon,
+  title,
+  description,
+  form,
+  variant = "default",
+}: Props) {
   return (
     <Drawer>
       <DrawerTrigger
         aria-label="Nuevo producto"
         className={buttonVariants({
-          variant: title ? "default" : "secondary",
+          variant: variant ?? (title ? "default" : "secondary"),
         })}
       >
         {icon} {title}

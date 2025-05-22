@@ -16,7 +16,7 @@ export default function Navigation() {
 
   return (
     <footer
-      className="row-start-3 rounded-2xl mb-2 mx-2 flex gap-2 flex-wrap items-center justify-center fixed bottom-0 left-0 right-0 bg-card text-card-foreground p-6"
+      className="row-start-3 rounded-2xl mb-2 mx-2 flex items-center justify-between fixed bottom-0 left-0 right-0 bg-card text-card-foreground p-6"
       role="contentinfo"
     >
       <Link
@@ -29,7 +29,6 @@ export default function Navigation() {
         <House size={20} />
         Pedidos
       </Link>
-
       <Link
         className={buttonVariants({
           variant: isCurrentPath("/scan") ? "default" : "secondary",
@@ -40,14 +39,14 @@ export default function Navigation() {
         <Barcode size={20} />
         Escaner
       </Link>
-
       <FormTrigger
         aria-label="Nuevo producto"
+        title="Nuevo"
+        variant="secondary"
         icon={<Plus size={20} />}
         description="Añadir nuevo producto"
         form={<NewProductForm />}
       />
-
       <Link
         className={buttonVariants({
           variant: isCurrentPath("/upload") ? "default" : "secondary",
