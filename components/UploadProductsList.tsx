@@ -92,11 +92,11 @@ export default function UploadProductsList() {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>¿Estás seguro?</DialogTitle>
+                <DialogTitle>¿Completar pedido?</DialogTitle>
               </DialogHeader>
               <p className="mb-4">
-                Esta acción añadirá los productos al inventario. ¿Quieres
-                continuar?
+                Esta acción finalizará el pedido. Si quieres seguir añadiendo
+                productos tendrás que crear otro. ¿Quieres completar el pedido?
               </p>
               <DialogFooter>
                 <Button
