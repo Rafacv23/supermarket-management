@@ -63,7 +63,7 @@ model Product {
   barcode       String         @unique
   price         Float?
   stock         Int            @default(0)
-  brand         String?        // ej: coca cola, alcampo, etc
+  brand         String?         // ej: coca cola, alcampo, etc
   quantity      String?         // ej: 100ml, 200ml, 500g
   category      Category
   description   String?

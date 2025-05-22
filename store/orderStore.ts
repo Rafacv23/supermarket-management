@@ -4,14 +4,12 @@ import { persist } from "zustand/middleware"
 interface OrderProduct {
   name: string
   barcode: string
-  currentStock: number
   stock: number
 }
 
 interface OrderStore {
   order: OrderProduct[]
   addProduct: (product: OrderProduct) => void
-  updateProductStock: (barcode: string, stock: number) => void
   removeProduct: (barcode: string) => void
   clearOrder: () => void
 }
@@ -32,7 +30,6 @@ export const useOrderStore = create<OrderStore>()(
                 ? {
                     ...p,
                     name: product.name,
-                    currentStock: product.currentStock,
                     stock: p.stock + product.stock,
                   }
                 : p
@@ -41,14 +38,6 @@ export const useOrderStore = create<OrderStore>()(
         } else {
           set({ order: [...get().order, product] })
         }
-      },
-
-      updateProductStock: (barcode, stock) => {
-        set({
-          order: get().order.map((p) =>
-            p.barcode === barcode ? { ...p, stock } : p
-          ),
-        })
       },
 
       removeProduct: (barcode) => {

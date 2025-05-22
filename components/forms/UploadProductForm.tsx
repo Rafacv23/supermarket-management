@@ -7,7 +7,6 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { useOrderStore } from "@/store/orderStore"
 import BarcodeScanner from "react-qr-barcode-scanner"
-
 import {
   Form,
   FormField,
@@ -18,16 +17,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import {
-  Trash,
-  Save,
-  UploadCloud,
-  Camera,
-  ArrowUp,
-  Boxes,
-  Loader,
-} from "lucide-react"
-import uploadProductAndCreateOrder from "@/lib/actions/createOrder"
+import { Save, Camera, Loader, RotateCcw } from "lucide-react"
 import { getProductByBarcode } from "@/lib/queries/products"
 
 interface Props {
@@ -42,7 +32,7 @@ const formSchema = z.object({
 export default function UploadProductForm({ barcode }: Props) {
   const [loading, setLoading] = useState(false)
   const [scanning, setScanning] = useState<boolean>(false)
-  const { order, addProduct, removeProduct, clearOrder } = useOrderStore()
+  const { addProduct } = useOrderStore()
 
   const form = useForm<z.infer<typeof formSchema>>({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -56,9 +46,13 @@ export default function UploadProductForm({ barcode }: Props) {
   async function handleAdd(values: z.infer<typeof formSchema>) {
     setLoading(true)
     try {
-      const product = await getProductByBarcode(values.barcode)
-      addProduct({ ...values, name: product.name, currentStock: product.stock })
-      console.log("Fetched product:", product)
+      const rawBarcode = values.barcode
+
+      // Format values
+      const formattedBarcode = rawBarcode.replace(/^;/, "")
+
+      const product = await getProductByBarcode(formattedBarcode)
+      addProduct({ ...values, name: product.name })
       toast.success("Producto añadido")
     } catch (err) {
       console.error("Error fetching product:", err)
@@ -74,22 +68,6 @@ export default function UploadProductForm({ barcode }: Props) {
     if (result) {
       form.setValue("barcode", result)
       setScanning(false)
-    }
-  }
-
-  async function handleUpload() {
-    setLoading(true)
-    try {
-      await uploadProductAndCreateOrder({
-        employeeId: "admin",
-        products: order,
-      })
-      toast.success("Productos enviados correctamente")
-      clearOrder()
-    } catch {
-      toast.error("Error al enviar productos")
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -164,15 +142,20 @@ export default function UploadProductForm({ barcode }: Props) {
           />
 
           <footer className="flex gap-4 pt-4 justify-end">
-            <Button type="reset" variant="outline" disabled={loading}>
+            <Button
+              type="reset"
+              onClick={() => form.reset()}
+              variant="outline"
+              disabled={loading}
+            >
               {loading ? (
                 <span className="flex items-center gap-2">
                   <Loader size={16} className="animate-spin" />
                 </span>
               ) : (
                 <span className="flex items-center gap-2">
-                  <Trash size={16} />
-                  Eliminar
+                  <RotateCcw size={16} />
+                  Cancelar
                 </span>
               )}
             </Button>
@@ -191,67 +174,6 @@ export default function UploadProductForm({ barcode }: Props) {
           </footer>
         </form>
       </Form>
-      {order.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="font-bold">Productos añadidos:</h3>
-          <ul className="space-y-2">
-            {order.map((product) => (
-              <li
-                key={product.barcode}
-                className="flex flex-col items-start border p-2 rounded"
-              >
-                <header className="flex justify-between items-center w-full mb-4">
-                  <h4 className="font-bold">{product.name}</h4>
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    disabled={loading}
-                    onClick={() => removeProduct(product.barcode)}
-                  >
-                    <Trash className="w-4 h-4" />
-                  </Button>
-                </header>
-                <div>
-                  <p className="flex items-center gap-2">
-                    <Boxes size={16} /> Almacen {product.currentStock} uds
-                  </p>
-                  <span className="flex items-center gap-2">
-                    <ArrowUp size={16} /> Subir {product.stock} uds
-                  </span>
-                </div>
-              </li>
-            ))}
-          </ul>
-
-          <div className="flex gap-4 justify-end">
-            <Button variant="outline" onClick={clearOrder} disabled={loading}>
-              {loading ? (
-                <span className="flex items-center gap-2">
-                  <Loader size={16} className="animate-spin" />
-                </span>
-              ) : (
-                <span className="flex items-center gap-2">
-                  <Trash size={16} />
-                  Vaciar lista
-                </span>
-              )}
-            </Button>
-
-            <Button onClick={handleUpload} disabled={loading}>
-              {loading ? (
-                <span className="flex items-center gap-2">
-                  <Loader size={16} className="animate-spin" />
-                </span>
-              ) : (
-                <span className="flex items-center gap-2">
-                  <UploadCloud size={16} />
-                  Confirmar y guardar
-                </span>
-              )}
-            </Button>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

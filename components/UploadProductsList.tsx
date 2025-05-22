@@ -1,6 +1,6 @@
 "use client"
 
-import { Barcode, Boxes, ArrowUp, Trash, Loader, Save } from "lucide-react"
+import { Barcode, ArrowUp, Trash, Loader, Save } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -57,20 +57,17 @@ export default function UploadProductsList() {
               <li key={product.barcode}>
                 <Card>
                   <CardHeader>
-                    <CardTitle>{product.name}</CardTitle>
+                    <CardTitle className="text-lg">{product.name}</CardTitle>
                     <CardDescription className="flex items-center gap-2">
                       <Barcode size={16} /> {product.barcode}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="flex items-center gap-2">
-                      <Boxes size={16} /> Almacen {product.currentStock} uds
-                    </p>
-                    <p className="flex items-center gap-2">
+                    <p className="flex items-center gap-2 font-bold">
                       <ArrowUp size={16} /> Subir {product.stock} uds
                     </p>
                   </CardContent>
-                  <CardFooter>
+                  <CardFooter className="w-full grid">
                     <Button
                       onClick={() => removeProduct(product.barcode)}
                       variant="destructive"
