@@ -44,7 +44,7 @@ export default function Navigation() {
       <FormTrigger
         aria-label="Nuevo producto"
         icon={<Plus size={20} />}
-        description="Enviar pedido de mercancía"
+        description="Añadir nuevo producto"
         form={<NewProductForm />}
       />
 

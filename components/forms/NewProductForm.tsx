@@ -36,24 +36,6 @@ const formSchema = z.object({
   barcode: z.string().min(2, {
     message: "El código de barras debe tener al menos 2 caracteres.",
   }),
-  price: z
-    .union([
-      z.coerce.number().min(0.01, {
-        message: "El precio debe ser mayor que 0.01.",
-      }),
-      z.literal("").transform(() => undefined),
-    ])
-    .optional()
-    .transform((val) => (typeof val === "number" ? val : undefined)),
-  stock: z
-    .union([
-      z.coerce
-        .number()
-        .min(0, { message: "El stock debe ser mayor o igual que 0." }),
-      z.literal("").transform(() => undefined),
-    ])
-    .optional()
-    .transform((val) => (typeof val === "number" ? val : undefined)),
 })
 
 interface Props {
@@ -77,19 +59,31 @@ export default function NewProductForm({ barcode }: Props) {
       name: "",
       category: undefined,
       barcode: barcode || "",
-      price: undefined,
-      stock: undefined,
     },
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function ClientAction(formData: FormData) {
     try {
+      const rawName = formData.get("name") as string
+      const rawCategory = form.getValues("category") // because category is not part of native FormData
+      const rawBarcode = formData.get("barcode") as string
+
+      // Format values
+      const formattedName = rawName.toLowerCase()
+      const formattedBarcode = rawBarcode.replace(/^;/, "")
+
+      if (!rawCategory) {
+        toast.error("Debes seleccionar una categoría.")
+        return
+      }
+      // activate this to debug
+      // console.log("Formatted Name:", formattedName)
+      // console.log("Formatted Category:", rawCategory)
+      // console.log("Formatted Barcode:", formattedBarcode)
       await createProduct({
-        name: values.name,
-        category: values.category,
-        barcode: values.barcode,
-        price: values.price,
-        stock: values.stock,
+        name: formattedName,
+        category: rawCategory,
+        barcode: formattedBarcode,
       })
       toast.success("Producto creado correctamente")
       form.reset()
@@ -101,24 +95,83 @@ export default function NewProductForm({ barcode }: Props) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 p-4">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nombre</FormLabel>
-              <FormControl>
-                <Input
-                  type="text"
-                  placeholder="Nombre del producto"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+      <form action={ClientAction} className="space-y-6 p-4">
+        <div className="flex items-end justify-between">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nombre</FormLabel>
+                <FormControl>
+                  <Input
+                    className="h-12 text-base"
+                    type="text"
+                    required
+                    placeholder="Nombre del producto"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {form.watch("name") && (
+            <Button
+              onClick={() => form.resetField("name")}
+              variant="outline"
+              className="h-12 text-base"
+            >
+              <Trash size={16} />
+              Borrar
+            </Button>
           )}
-        />
+        </div>
+
+        <div className="flex items-end justify-between">
+          <FormField
+            control={form.control}
+            name="barcode"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Código de barras</FormLabel>
+                <div className="flex gap-2">
+                  <FormControl>
+                    <Input
+                      className="h-12 text-base"
+                      type="tel"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      required
+                      placeholder="Código de barras"
+                      {...field}
+                    />
+                  </FormControl>
+                  <Button
+                    type="button"
+                    variant={scanning ? "destructive" : "default"}
+                    onClick={() => setScanning(!scanning)}
+                    className="h-12 px-4 gap-2 text-base"
+                  >
+                    <Camera className="w-4 h-4" />
+                    {scanning ? "Cerrar cámara" : "Escanear"}
+                  </Button>
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {form.watch("barcode") && (
+            <Button
+              onClick={() => form.resetField("barcode")}
+              variant="outline"
+              className="h-12 text-base ml-2"
+            >
+              <Trash size={16} />
+              Borrar
+            </Button>
+          )}
+        </div>
 
         <FormField
           control={form.control}
@@ -128,13 +181,17 @@ export default function NewProductForm({ barcode }: Props) {
               <FormLabel>Categoría</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="h-12 text-base">
                     <SelectValue placeholder="Categoría del producto" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   {Object.values(Category).map((category) => (
-                    <SelectItem key={category} value={category}>
+                    <SelectItem
+                      key={category}
+                      value={category}
+                      className="h-12 text-base"
+                    >
                       {category}
                     </SelectItem>
                   ))}
@@ -145,77 +202,14 @@ export default function NewProductForm({ barcode }: Props) {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="barcode"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Código de barras</FormLabel>
-              <div className="flex gap-2">
-                <FormControl>
-                  <Input type="text" placeholder="1234567890123" {...field} />
-                </FormControl>
-                <Button
-                  type="button"
-                  variant={scanning ? "destructive" : "default"}
-                  onClick={() => setScanning(!scanning)}
-                  className="gap-1"
-                >
-                  <Camera className="w-4 h-4" />
-                  {scanning ? "Cerrar cámara" : "Escanear"}
-                </Button>
-              </div>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         {scanning && <Scanner onDetected={handleScan} />}
 
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Precio (Opcional)</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  min={0.01}
-                  placeholder="Precio en €"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="stock"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Stock (Opcional)</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  min={0}
-                  placeholder="Cantidad en almacén"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         <footer className="flex gap-4 pt-4 justify-end">
-          <Button type="reset" variant="outline">
+          <Button type="reset" variant="outline" className="h-12 text-base">
             <Trash />
             Borrar
           </Button>
-          <Button type="submit">
+          <Button type="submit" className="h-12 text-base">
             <Save /> Guardar
           </Button>
         </footer>
