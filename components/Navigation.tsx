@@ -16,7 +16,7 @@ export default function Navigation() {
 
   return (
     <footer
-      className="row-start-3 rounded-2xl mb-2 mx-2 flex items-center justify-between sm:justify-center sm:gap-4 fixed bottom-0 left-0 right-0 bg-card text-card-foreground p-6"
+      className="row-start-3 rounded-2xl mb-2 mx-2 flex items-center justify-center gap-2 fixed bottom-0 left-0 right-0 bg-card text-card-foreground p-6"
       role="contentinfo"
     >
       <Link
@@ -26,8 +26,10 @@ export default function Navigation() {
         href="/"
         title="Inicio"
       >
-        <House size={20} />
-        Pedidos
+        <span className="flex flex-col items-center">
+          <House size={20} />
+          Pedidos
+        </span>
       </Link>
       <Link
         className={buttonVariants({
@@ -36,8 +38,10 @@ export default function Navigation() {
         href="/scan"
         title="Escanear producto"
       >
-        <Barcode size={20} />
-        Escaner
+        <span className="flex flex-col items-center">
+          <Barcode size={20} />
+          Escaner
+        </span>
       </Link>
       <FormTrigger
         aria-label="Nuevo producto"
@@ -54,8 +58,10 @@ export default function Navigation() {
         href="/upload"
         title="Subir mercancía"
       >
-        <ArrowUp size={20} />
-        Subir
+        <span className="flex flex-col items-center">
+          <ArrowUp size={20} />
+          Subir
+        </span>
       </Link>
     </footer>
   )

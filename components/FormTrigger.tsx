@@ -39,7 +39,15 @@ export default function FormTrigger({
           variant: variant ?? (title ? "default" : "secondary"),
         })}
       >
-        {icon} {title}
+        {variant === "secondary" ? (
+          <span className="flex flex-col items-center">
+            {icon} {title}
+          </span>
+        ) : (
+          <>
+            {icon} {title}
+          </>
+        )}
       </DrawerTrigger>
       <DrawerContent
         className="h-[85dvh] px-6 sm:rounded-t-xl"
