@@ -74,10 +74,7 @@ export default function UploadProductForm({ barcode }: Props) {
   return (
     <div className="space-y-6 p-4">
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleAdd)}
-          className="space-y-4 p-4 border rounded-md"
-        >
+        <form onSubmit={form.handleSubmit(handleAdd)} className="space-y-4 p-4">
           <FormField
             control={form.control}
             name="barcode"
