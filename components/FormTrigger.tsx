@@ -41,7 +41,10 @@ export default function FormTrigger({
       >
         {icon} {title}
       </DrawerTrigger>
-      <DrawerContent className="h-[85dvh] px-6 sm:rounded-t-xl">
+      <DrawerContent
+        className="h-[85dvh] px-6 sm:rounded-t-xl"
+        style={{ pointerEvents: "auto", zIndex: 50 }}
+      >
         <DrawerHeader>
           <div className="flex items-center justify-between">
             <DrawerTitle>{title || "Nuevo producto"}</DrawerTitle>
