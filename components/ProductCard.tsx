@@ -1,15 +1,12 @@
 import {
   Card,
-  CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import { Product } from "@prisma/client"
 import { Badge } from "@/components/ui/badge"
-import { ArrowDown, ArrowUp, Barcode, Boxes } from "lucide-react"
-import ReceiveProductForm from "@/components/forms/ReceiveProductForm"
+import { ArrowUp, Barcode } from "lucide-react"
 import UploadProductForm from "@/components/forms/UploadProductForm"
 import FormTrigger from "./FormTrigger"
 
@@ -21,38 +18,21 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Card>
       <CardHeader>
-        <Badge>{product.category}</Badge>
-        <CardTitle>{product.name}</CardTitle>
-        <CardDescription className="flex items-center gap-2">
+        <Badge className="mb-2">{product.category}</Badge>
+        <CardTitle className="mb-2">{product.name}</CardTitle>
+        <CardDescription className="flex items-center gap-2 mb-2">
           <Barcode size={16} /> {product.barcode}
         </CardDescription>
-        <CardDescription className="flex items-center gap-2">
+        <CardDescription className="flex items-center gap-2 mb-4">
           {product.brand}
         </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex gap-2"></div>
-        <div className="grid grid-cols-2">
-          <p className="text-sm text-muted-foreground flex items-center gap-2">
-            <Boxes size={16} /> Almacen
-          </p>
-          <p className="font-bold">{product.stock}uds</p>
-        </div>
-      </CardContent>
-      <CardFooter className="flex justify-end gap-2">
-        <FormTrigger
-          icon={<ArrowDown size={16} />}
-          title="Bajar"
-          description="Añade todos los productos que hayas recibido"
-          form={<ReceiveProductForm barcode={product.barcode} />}
-        />
         <FormTrigger
           icon={<ArrowUp size={16} />}
           title="Subir"
           description="Añade todos los productos que vayas a subir desde el almacen"
           form={<UploadProductForm barcode={product.barcode} />}
         />
-      </CardFooter>
+      </CardHeader>
     </Card>
   )
 }
