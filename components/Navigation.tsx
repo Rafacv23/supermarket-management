@@ -16,7 +16,7 @@ export default function Navigation() {
 
   return (
     <footer
-      className="row-start-3 rounded-2xl mb-2 mx-2 flex items-center justify-between md:justify-center md:gap-4 fixed bottom-0 left-0 right-0 bg-card text-card-foreground p-6"
+      className="row-start-3 rounded-2xl mb-2 mx-2 flex items-center justify-between sm:justify-center sm:gap-4 fixed bottom-0 left-0 right-0 bg-card text-card-foreground p-6"
       role="contentinfo"
     >
       <Link

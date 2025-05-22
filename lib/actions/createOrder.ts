@@ -30,25 +30,11 @@ export default async function uploadProductAndCreateOrder({
 
         if (!existingProduct) {
           console.warn(`Producto con barcode ${product.barcode} no encontrado.`)
-          return
+          return {
+            message: `Producto con código de barras ${product.barcode} no encontrado.`,
+            status: 403,
+          }
         }
-
-        if (existingProduct.stock < product.stock) {
-          console.warn(
-            `Stock insuficiente para ${product.barcode}: Disponible ${existingProduct.stock}, Intentado: ${product.stock}`
-          )
-          throw new Error("Stock insuficiente")
-        }
-
-        // Actualizar stock
-        await prisma.product.update({
-          where: { barcode: product.barcode },
-          data: {
-            stock: {
-              decrement: product.stock,
-            },
-          },
-        })
 
         validItems.push({
           productBarcode: product.barcode,
@@ -59,7 +45,10 @@ export default async function uploadProductAndCreateOrder({
 
     if (validItems.length === 0) {
       console.warn("No hay productos válidos para crear una orden.")
-      return null
+      return {
+        message: "No hay productos válidos para crear un pedido.",
+        status: 403,
+      }
     }
 
     // Paso 2: Crear la orden y los OrderItems
@@ -80,11 +69,19 @@ export default async function uploadProductAndCreateOrder({
       },
     })
 
+    console.log(order)
+
     revalidatePath("/")
 
-    return order
+    return {
+      message: "Pedido creado con éxito",
+      status: 200,
+    }
   } catch (error) {
     console.error("Error al crear la orden:", error)
-    throw new Error("Falló la creación de la orden")
+    return {
+      message: "Error al crear el pedido",
+      status: 500,
+    }
   }
 }

@@ -21,6 +21,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { toast } from "sonner"
 
 export default function UploadProductsList() {
   const { order, removeProduct, clearOrder } = useOrderStore()
@@ -33,16 +34,23 @@ export default function UploadProductsList() {
       setLoading(true)
       setError("")
 
-      await uploadProductAndCreateOrder({
-        employeeId: "admin",
+      const response = await uploadProductAndCreateOrder({
+        employeeId: "1",
         products: order,
       })
 
-      clearOrder()
-      alert("Productos recibidos correctamente")
+      if (response.status !== 200) {
+        //throw new Error(response?.message || "Error desconocido")
+        toast.error(response?.message || "No se ha podido crear el pedido")
+      }
+
+      if (response.status === 200) {
+        toast.success("Pedido creado con éxito") // Or use alert
+        clearOrder()
+      }
     } catch (err) {
       console.error(err)
-      setError("Hubo un error al enviar los productos.")
+      toast.error("No se ha podido crear el pedido")
     } finally {
       setLoading(false)
     }
