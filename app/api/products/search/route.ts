@@ -4,7 +4,7 @@ import { type NextRequest } from "next/server"
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
-  const query = searchParams.get("q")
+  const query = searchParams.get("q")?.trim()
 
   if (!query) {
     return new Response("Query is required", { status: 400 })
@@ -14,11 +14,21 @@ export async function GET(request: NextRequest) {
   const limit = Number(searchParams.get("limit")) || 25
   const skip = Math.max((page - 1) * limit, 0)
 
+  const words = query.trim().split(/\s+/) // ["aceite", "auchan"]
+
   const products = await prisma.product.findMany({
     where: {
       OR: [
-        { name: { contains: query, mode: "insensitive" } },
-        { brand: { contains: query, mode: "insensitive" } },
+        {
+          AND: words.map((word) => ({
+            name: { contains: word, mode: "insensitive" },
+          })),
+        },
+        {
+          AND: words.map((word) => ({
+            brand: { contains: word, mode: "insensitive" },
+          })),
+        },
       ],
     },
     select: {
@@ -28,7 +38,7 @@ export async function GET(request: NextRequest) {
       category: true,
     },
     skip,
-    take: 25,
+    take: limit,
   })
 
   if (!products) {
