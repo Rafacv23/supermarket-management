@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation"
 import Link from "next/link"
-import { ArrowDown, ArrowUp, Barcode, House, Plus } from "lucide-react"
+import { ArrowUp, Barcode, House, Plus } from "lucide-react"
 import { buttonVariants } from "@/components/ui/button"
 import FormTrigger from "./FormTrigger"
 import NewProductForm from "./forms/NewProductForm"
@@ -26,10 +26,8 @@ export default function Navigation() {
         href="/"
         title="Inicio"
       >
-        <span className="flex flex-col items-center">
-          <House size={20} />
-          Pedidos
-        </span>
+        <House size={20} />
+        Pedidos
       </Link>
 
       <Link
@@ -39,10 +37,8 @@ export default function Navigation() {
         href="/scan"
         title="Escanear producto"
       >
-        <span className="flex flex-col items-center">
-          <Barcode size={20} />
-          Escaner
-        </span>
+        <Barcode size={20} />
+        Escaner
       </Link>
 
       <FormTrigger
@@ -54,28 +50,13 @@ export default function Navigation() {
 
       <Link
         className={buttonVariants({
-          variant: isCurrentPath("/receive") ? "default" : "secondary",
-        })}
-        href="/receive"
-        title="Recepción de pedidos"
-      >
-        <span className="flex flex-col items-center">
-          <ArrowDown size={20} />
-          Bajar
-        </span>
-      </Link>
-
-      <Link
-        className={buttonVariants({
           variant: isCurrentPath("/upload") ? "default" : "secondary",
         })}
         href="/upload"
         title="Subir mercancía"
       >
-        <span className="flex flex-col items-center">
-          <ArrowUp size={20} />
-          Subir
-        </span>
+        <ArrowUp size={20} />
+        Subir
       </Link>
     </footer>
   )
