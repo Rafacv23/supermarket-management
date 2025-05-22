@@ -25,7 +25,6 @@ export async function GET(
       name: true,
       brand: true,
       category: true,
-      stock: true,
     },
     skip,
     take: limit,

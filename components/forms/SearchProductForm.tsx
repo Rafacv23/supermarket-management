@@ -1,6 +1,6 @@
 "use client"
 
-import { Camera, Loader, Search, X } from "lucide-react"
+import { Camera, Loader, Search, Trash } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
@@ -42,7 +42,7 @@ export default function SearchProductForm({
             aria-label="Borrar"
             className={searchTerm ? "" : "invisible"}
           >
-            <X size={16} />
+            <Trash size={16} />
           </Button>
           <Button
             type="button"

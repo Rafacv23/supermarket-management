@@ -13,7 +13,7 @@ type Props = {
 export default function Scanner({
   onDetected,
   width = 300,
-  height = 300,
+  height = 150,
 }: Props) {
   return (
     <div className="mt-4 max-w-sm border rounded-md overflow-hidden">

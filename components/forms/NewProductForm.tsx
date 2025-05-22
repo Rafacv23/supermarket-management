@@ -173,6 +173,7 @@ export default function NewProductForm({ barcode }: Props) {
           )}
         </div>
 
+        {scanning && <Scanner onDetected={handleScan} />}
         <FormField
           control={form.control}
           name="category"
@@ -201,8 +202,6 @@ export default function NewProductForm({ barcode }: Props) {
             </FormItem>
           )}
         />
-
-        {scanning && <Scanner onDetected={handleScan} />}
 
         <footer className="flex gap-4 pt-4 justify-end">
           <Button type="reset" variant="outline" className="h-12 text-base">

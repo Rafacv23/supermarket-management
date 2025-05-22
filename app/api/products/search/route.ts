@@ -26,7 +26,6 @@ export async function GET(request: NextRequest) {
       name: true,
       brand: true,
       category: true,
-      stock: true,
     },
     skip,
     take: 25,
