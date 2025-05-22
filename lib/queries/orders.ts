@@ -44,6 +44,28 @@ export function useOrderDetails(orderId: string) {
   })
 }
 
+export async function getOrderDetails(
+  orderId: string
+): Promise<OrderDetails | null> {
+  try {
+    const order = await prisma.order.findUnique({
+      where: { id: orderId },
+      include: {
+        orderItems: {
+          include: {
+            product: true,
+          },
+        },
+      },
+    })
+
+    return order
+  } catch (error) {
+    console.error("Error fetching order details:", error)
+    return null
+  }
+}
+
 export async function getPendingOrders(): Promise<Order[] | null> {
   try {
     const orders = await prisma.order.findMany({
