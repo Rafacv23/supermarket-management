@@ -6,7 +6,7 @@ import { z } from "zod"
 import { useState } from "react"
 import { toast } from "sonner"
 import { useOrderStore } from "@/store/orderStore"
-import BarcodeScanner from "react-qr-barcode-scanner"
+import BarcodeScanner, { BarcodeStringFormat } from "react-qr-barcode-scanner"
 import {
   Form,
   FormField,
@@ -109,8 +109,9 @@ export default function UploadProductForm({ barcode }: Props) {
           {scanning && (
             <div className="mt-4" aria-disabled={loading}>
               <BarcodeScanner
-                width={400}
-                height={400}
+                width={300}
+                height={100}
+                formats={[BarcodeStringFormat.EAN_13]}
                 onUpdate={(err, result) => {
                   if (result) handleScan(result.getText())
                 }}

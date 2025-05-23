@@ -22,12 +22,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 export default function UploadProductsList() {
   const { order, removeProduct, clearOrder } = useOrderStore()
 
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>("")
+  const router = useRouter()
 
   const handleSendOrder = async () => {
     try {
@@ -47,6 +49,7 @@ export default function UploadProductsList() {
       if (response.status === 200) {
         toast.success("Pedido creado con éxito") // Or use alert
         clearOrder()
+        router.push("/")
       }
     } catch (err) {
       console.error(err)
